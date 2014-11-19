@@ -5,7 +5,7 @@
  *      Author: mauro
  */
 
-#include "StringUtils.h"
+#include "../headers/StringUtils.h"
 
 StringUtils::~StringUtils() {
 	// TODO Auto-generated destructor stub
