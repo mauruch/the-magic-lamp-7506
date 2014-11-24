@@ -1,19 +1,11 @@
-/*
- * StringUtils.cpp
- *
- *  Created on: 16/11/2014
- *      Author: mauro
- */
-
 #include "../headers/StringUtils.h"
 
 StringUtils::~StringUtils() {
 	// TODO Auto-generated destructor stub
 }
 
-StringUtils::StringUtils() {
-	// TODO Auto-generated constructor stub
-
+StringUtils::StringUtils(string direccionDeLosNgramas) {
+	this->direccionNgramas = direccionDeLosNgramas;
 }
 
 vector<string> & StringUtils::split(const string &s, char delim,
@@ -60,3 +52,20 @@ void StringUtils::removeSpaces(string& str) {
 		str.erase(str.begin());
 }
 
+int StringUtils::devolverPesoNgrama(string stringABuscar){
+	string auxiliar = "";
+	string buscarEsto = "grep '";
+	buscarEsto.append(stringABuscar);
+	buscarEsto.append(" [^a-z^A-Z]*$' ");
+	buscarEsto.append(this->direccionNgramas);
+	FILE *filePointer = popen(buscarEsto.c_str(),"r");
+
+	char buf[1024];
+
+	while (fgets(buf, 1024, filePointer)) {
+		auxiliar.append(buf);
+	}
+	std::cout << buf << std::endl;
+	fclose(filePointer);
+	return 0;
+}

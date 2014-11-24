@@ -1,10 +1,3 @@
-/*
- * StringUtils.h
- *
- *  Created on: 16/11/2014
- *      Author: mauro
- */
-
 #ifndef STRINGUTILS_H_
 #define STRINGUTILS_H_
 
@@ -17,11 +10,14 @@ using namespace std;
 
 class StringUtils {
 
+private:
+	string direccionNgramas;
+
 public:
 
 	virtual ~StringUtils();
 
-	StringUtils();
+	StringUtils(string direccionDeLosNgramas);
 
 	static vector<string> &split(const string &s, char delim,
 			vector<string> &elems);
@@ -37,6 +33,9 @@ public:
 	 * Trim string, remove all whitespace
 	 */
 	static void removeSpaces(string& str);
+
+	/*devuelve el peso del ngrama solicitado */
+	int devolverPesoNgrama(string stringABuscar);
 
 };
 
