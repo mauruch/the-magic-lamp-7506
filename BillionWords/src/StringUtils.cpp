@@ -53,6 +53,7 @@ void StringUtils::removeSpaces(string& str) {
 }
 
 int StringUtils::devolverPesoNgrama(string stringABuscar){
+	vector<string> vectorDeStrings;
 	string auxiliar = "";
 	string buscarEsto = "grep '";
 	buscarEsto.append(stringABuscar);
@@ -60,12 +61,20 @@ int StringUtils::devolverPesoNgrama(string stringABuscar){
 	buscarEsto.append(this->direccionNgramas);
 	FILE *filePointer = popen(buscarEsto.c_str(),"r");
 
-	char buf[1024];
-
-	while (fgets(buf, 1024, filePointer)) {
-		auxiliar.append(buf);
-	}
-	std::cout << buf << std::endl;
+	char palabra[1024];
+	fgets(palabra, 1024, filePointer);	//tengo el contenido de lo buscado
 	fclose(filePointer);
-	return 0;
+
+	auxiliar = palabra;	//lo paso a un string para que sea usado con el split
+	vectorDeStrings = this->split(auxiliar,' ');	//realizo el split
+	int numero = 0;
+
+
+	if (!(vectorDeStrings.empty())){
+		std::stringstream out;
+		out << vectorDeStrings.back();
+		out >> numero;
+//		std::cout << numero << std::endl;
+	}
+	return numero;
 }
