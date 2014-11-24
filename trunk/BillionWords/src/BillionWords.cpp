@@ -8,38 +8,36 @@
 #include "../headers/StringUtils.h"
 using namespace std;
 
-//El primer argumento es donde esta el archivo de unigramas bigramas y trigramas
-//El segundo argunemento es donde esta el archivo a predecir el que se llama test_v2
-//El tercer argumento va a ser el archivo de salida
+//El primer argumento es donde esta el archivo de ngramas
+//El segundo argumento es donde esta el archivo a predecir el que se llama test_v2
 //Modificar estos parametros desde las propiedades de run
 int main(int argc, char *argv[]) {
-	string ngrams = argv[0];
-	string test_v2 = argv[1];
-	string output = argv[2];
+	string ngrams = argv[1];
+	string test_v2 = argv[2];
 
+	StringUtils *stringUtils = new StringUtils(ngrams);	//para usar sus funciones
 
-
+	stringUtils->devolverPesoNgrama("nueve diez");
 
 	ifstream fileNgrams(ngrams.c_str());
 	ifstream fileTest_v2(test_v2.c_str());
-	ifstream fileOutput(output.c_str());
 //el c_str() es porque:the standard streams doesn't accept a standard string, only c-string! So pass the string using c_str():
 
-	if (fileNgrams.is_open() && fileTest_v2.is_open() && fileOutput.is_open()){
+	if (fileNgrams.is_open() && fileTest_v2.is_open()){
 		//Una vez que tengo los files cargados
 		//si llego aca es que checkee que ya se han abierto bien los archivos
 			string lineaTexto;
 
-			while (getline(fileTest_v2, lineaTexto)) {
-							StringUtils::removeSpaces(lineaTexto);
-//								std::vector<string> array = StringUtils::split(lineaTexto, '_');
-//								cout << "tamaño: " << array.size() << endl;
-								cout << lineaTexto << endl;
-//								cout << "weight: " << StringUtils::getWeight(array) << endl;
-
-				//			else cout << line << endl;
-
-			}
+//			while (getline(fileTest_v2, lineaTexto)) {
+//							StringUtils::removeSpaces(lineaTexto);
+////								std::vector<string> array = StringUtils::split(lineaTexto, '_');
+////								cout << "tamaño: " << array.size() << endl;
+////								cout << lineaTexto << endl;
+////								cout << "weight: " << StringUtils::getWeight(array) << endl;
+//
+//				//			else cout << line << endl;
+//
+//			}
 
 	}
 	else{
