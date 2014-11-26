@@ -29,7 +29,7 @@ public:
 	 * return the weight
 	 * ngram: 'word1 word2.. wordN weight
 	 */
-	unsigned int getWeight(string ngram);
+	int getWeight(string ngram);
 	/**
 	 * will return the modified lineOfText with the missing word, ready to be put in the file
 	 */
