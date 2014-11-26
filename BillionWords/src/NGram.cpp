@@ -15,12 +15,14 @@ void NGram::fillTheMissingWord(string *lineOfText){
 	unsigned int minorWeight = std::numeric_limits<unsigned int>::max();
 	unsigned int whereToAdd;	//aca vamos a saber donde vamos a tener que meter una palabra porque es la que falta
 	vector<string> vectorOfTheLine = StringUtils::split(*lineOfText,' ');
-	for (unsigned int counter = 0; counter < (vectorOfTheLine.size() - 1); counter++) {
+	for (unsigned int counter = 1; counter < (vectorOfTheLine.size() - 1); counter++) {
 		//agarro de a bigramas y me fijare el peso
 		searchNgram = "";
 		searchNgram.append(vectorOfTheLine[counter]);
 		searchNgram.append(" ");
 		searchNgram.append(vectorOfTheLine[counter+1]);
+
+		getProbability(vectorOfTheLine, counter);
 
 		//obtengo el peso
 		if (this->getWeight(searchNgram) < minorWeight){
@@ -43,29 +45,58 @@ void NGram::fillTheMissingWord(string *lineOfText){
 return;
 }
 
-unsigned int NGram::getWeight(string ngram) {
+int NGram::getWeight(string ngram) {
+
 	vector<string> vectorDeStrings;
-	string aux = "";
-	string regularExpr = "grep '";
-	regularExpr.append(ngram);
-	regularExpr.append(" [^a-z^A-Z]*$' ");
-	regularExpr.append(this->ngramAddress);
-	FILE *filePointer = popen(regularExpr.c_str(), "r");
 
-	char buffering[1024];
-	fgets(buffering, 1024, filePointer);	//tengo el contenido de lo buscado
-	fclose(filePointer);
+	StringUtils::removeSpaces(ngram);
 
-	aux = buffering;	//lo paso a un string para que sea usado con el split
-	vectorDeStrings = StringUtils::split(aux, ' ');//realizo el split
-	unsigned int weight = 0;
+	vectorDeStrings = StringUtils::split(ngram, ' ');
 
-	if (!(vectorDeStrings.empty())) {
-		std::stringstream out;
-		out << vectorDeStrings.back();
-		out >> weight;
-	}
-	//std::cout << weight << std::endl;
-	return weight;
+	return vectorDeStrings.at(vectorDeStrings.size() -1);
+
 }
+
+
+unsigned double getProbability(vector<string> line, int counter) {
+
+	unsigned double 3GramProbability = (double)0;
+	if (counter > 1){
+		string gram = "";
+		gram.append(line.at(counter -2)).append(" ");
+		gram.append(line.at(counter -1)).append(" ");
+		gram.append(line.at(counter));
+		3GramProbability = get3GramProbability(gram);
+	}
+
+	//TODO refactor
+
+	double 2GramProbability = get2GramProbability();
+	double 1GramProbability = get1GramProbability();
+}
+
+
+
+unsigned double get3GramProbability(string 3gram) { //the cat is
+
+	std::string result = system( "./grep exact regular expression" ) ;
+	getWeight(result); //check empty string
+
+	std::string result = system( "./grep hallar todos los bigramas ) ;
+
+}
+
+
+//std::string exec(char* cmd) {
+//    FILE* pipe = popen(cmd, "r");
+//    if (!pipe) return "ERROR";
+//    char buffer[128];
+//    std::string result = "";
+//    while(!feof(pipe)) {
+//    	if(fgets(buffer, 128, pipe) != NULL)
+//    		result += buffer;
+//    }
+//    pclose(pipe);
+//    return result;
+//}
 

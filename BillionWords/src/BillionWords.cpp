@@ -9,19 +9,15 @@
 #include "../headers/NGram.h"
 using namespace std;
 
-//El primer argumento es donde esta el archivo de ngramas
-//El segundo argumento es donde esta el archivo a predecir el que se llama test_v2
-//Modificar estos parametros desde las propiedades de run
+
 int main(int argc, char *argv[]) {
 	string ngrams = argv[1];	//direccion de donde se encuentra el archivo
 	string test_v2 = argv[2];	//direccion de donde se encuentra el archivo
 
 	std::ofstream outputFile;									//abro un archivo de salida
-	outputFile.open("resultadoFinal.txt", std::ios_base::app);	//le indico el nombre del archivo de salida
 
 	ifstream fileNgrams(ngrams.c_str());
 	ifstream fileTest_v2(test_v2.c_str());
-//el c_str() es porque:the standard streams doesn't accept a standard string, only c-string! So pass the string using c_str():
 	NGram *NGramFunctions = new NGram(ngrams);	//Inicializo el NGram con la direccion donde se encuentra el archivo de los Ngramas
 
 	if (fileNgrams.is_open() && fileTest_v2.is_open()){
