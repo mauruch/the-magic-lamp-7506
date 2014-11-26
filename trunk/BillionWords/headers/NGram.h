@@ -13,7 +13,6 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-
 using namespace std;
 
 class NGram {
@@ -30,7 +29,11 @@ public:
 	 * return the weight
 	 * ngram: 'word1 word2.. wordN weight
 	 */
-	int getWeight(string ngram);
+	unsigned int getWeight(string ngram);
+	/**
+	 * will return the modified lineOfText with the missing word, ready to be put in the file
+	 */
+	void fillTheMissingWord(string *lineOfText);
 };
 
 #endif /* HEADERS_NGRAM_H_ */
