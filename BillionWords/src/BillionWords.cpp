@@ -22,12 +22,12 @@ int main(int argc, char *argv[]) {
 	ifstream fileNgrams(ngrams.c_str());
 	ifstream fileTest_v2(test_v2.c_str());
 //el c_str() es porque:the standard streams doesn't accept a standard string, only c-string! So pass the string using c_str():
+	NGram *NGramFunctions = new NGram(ngrams);	//Inicializo el NGram con la direccion donde se encuentra el archivo de los Ngramas
 
 	if (fileNgrams.is_open() && fileTest_v2.is_open()){
 		//Una vez que tengo los files cargados
 		//si llego aca es que checkee que ya se han abierto bien los archivos
 			string lineOfText;
-			int test = 0;
 			//Hago esto una sola vez para ponerle el "id", "sentence"
 			getline(fileTest_v2, lineOfText);
 			outputFile << lineOfText;
@@ -39,13 +39,14 @@ int main(int argc, char *argv[]) {
 				int longOfSentence = lineOfText.length();
 				startOfSentence = lineOfText.find("\"");
 
-
 				for (int counter=0 ; counter<startOfSentence ; counter++ ){
 					outputFile << lineOfText[counter];
 				}
 				outputFile << "\"";	//la parte inicial de las comillas
-
 				lineOfText = lineOfText.substr (startOfSentence+1,(longOfSentence -startOfSentence-2));	//aca tengo la frase sin la primera ni la ultima comilla
+
+				NGramFunctions->fillTheMissingWord(&lineOfText);	//aca le agrego la palabra que le falta
+
 				outputFile << lineOfText;
 				outputFile << "\"";	//la parte final de las comillas
 
