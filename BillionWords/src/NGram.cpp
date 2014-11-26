@@ -1,10 +1,3 @@
-/*
- * NGram.cpp
- *
- *  Created on: 25/11/2014
- *      Author: mauro
- */
-
 #include "../headers/NGram.h"
 #include "../headers/StringUtils.h"
 

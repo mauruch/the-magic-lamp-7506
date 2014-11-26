@@ -1,5 +1,6 @@
 #include <stdlib.h>
-#include <fstream>
+#include <iostream>
+#include "../headers/generadorArchivoGrep.h"
 using namespace std;
 
 
@@ -24,7 +25,9 @@ void generadorArchivoGrep::generarArchivo(string miPalabra){
 		    myfile << "grep $var docprueba > grepscriptprueba2.txt";
 		    myfile.close();
 		  }
-		  else cout << "Unable to open file";
+		  else{
+			  std::cout << "Unable to open file" << std::endl;
+		  }
 		system("./grepscriptprueba2.sh");
 
 
