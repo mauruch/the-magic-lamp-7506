@@ -10,14 +10,11 @@ using namespace std;
 
 class StringUtils {
 
-private:
-	string direccionNgramas;
-
 public:
 
 	virtual ~StringUtils();
 
-	StringUtils(string direccionDeLosNgramas);
+	StringUtils();
 
 	static vector<string> &split(const string &s, char delim,
 			vector<string> &elems);
@@ -34,8 +31,7 @@ public:
 	 */
 	static void removeSpaces(string& str);
 
-	/*devuelve el peso del ngrama solicitado */
-	int devolverPesoNgrama(string stringABuscar);
+
 
 };
 
