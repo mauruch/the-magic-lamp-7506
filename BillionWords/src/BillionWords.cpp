@@ -13,10 +13,11 @@ using namespace std;
 //El segundo argumento es donde esta el archivo a predecir el que se llama test_v2
 //Modificar estos parametros desde las propiedades de run
 int main(int argc, char *argv[]) {
-	string ngrams = argv[1];
-	string test_v2 = argv[2];
-	std::ofstream resultadoFinal;
-	resultadoFinal.open("resultadoFinal.txt", std::ios_base::app);
+	string ngrams = argv[1];	//direccion de donde se encuentra el archivo
+	string test_v2 = argv[2];	//direccion de donde se encuentra el archivo
+
+	std::ofstream outputFile;									//abro un archivo de salida
+	outputFile.open("resultadoFinal.txt", std::ios_base::app);	//le indico el nombre del archivo de salida
 
 	ifstream fileNgrams(ngrams.c_str());
 	ifstream fileTest_v2(test_v2.c_str());
@@ -25,30 +26,30 @@ int main(int argc, char *argv[]) {
 	if (fileNgrams.is_open() && fileTest_v2.is_open()){
 		//Una vez que tengo los files cargados
 		//si llego aca es que checkee que ya se han abierto bien los archivos
-			string lineaTexto;
+			string lineOfText;
+			int test = 0;
 			//Hago esto una sola vez para ponerle el "id", "sentence"
-			getline(fileTest_v2, lineaTexto);
-			resultadoFinal << lineaTexto;
-			resultadoFinal << std::endl;
+			getline(fileTest_v2, lineOfText);
+			outputFile << lineOfText;
+			outputFile << std::endl;
 
-			while (getline(fileTest_v2, lineaTexto)) {
-				int iniciaFrase;
-//				int terminaFrase;
-				int largoFrase = lineaTexto.length();
-				string linea = lineaTexto;
-				string parsearFrase = "";
-				iniciaFrase = lineaTexto.find("\"");
-//				terminaFrase = lineaTexto.rfind("\"");
-				for (int contador=0 ; contador<iniciaFrase ; contador++ ){
-					resultadoFinal << lineaTexto[contador];
+			while (getline(fileTest_v2, lineOfText)) {
+				//aca se procesaria el metodo
+				int startOfSentence;
+				int longOfSentence = lineOfText.length();
+				startOfSentence = lineOfText.find("\"");
+
+
+				for (int counter=0 ; counter<startOfSentence ; counter++ ){
+					outputFile << lineOfText[counter];
 				}
-				resultadoFinal << "\"";	//la parte inicial de las comillas
+				outputFile << "\"";	//la parte inicial de las comillas
 
-				lineaTexto = lineaTexto.substr (iniciaFrase+1,(largoFrase -iniciaFrase-2));	//aca tengo la frase sin la primera ni la ultima comilla
-				resultadoFinal << lineaTexto;
-				resultadoFinal << "\"";	//la parte final de las comillas
+				lineOfText = lineOfText.substr (startOfSentence+1,(longOfSentence -startOfSentence-2));	//aca tengo la frase sin la primera ni la ultima comilla
+				outputFile << lineOfText;
+				outputFile << "\"";	//la parte final de las comillas
 
-				resultadoFinal << std::endl;
+				outputFile << std::endl;
 			}
 
 	}
@@ -60,7 +61,7 @@ int main(int argc, char *argv[]) {
 	}
 
 
-	resultadoFinal.close();
+	outputFile.close();
 	return 0;
 }
 
