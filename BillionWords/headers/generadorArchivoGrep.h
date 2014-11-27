@@ -1,10 +1,3 @@
-/*
- * generadorArchivoGrep.h
- *
- *  Created on: 25/11/2014
- *      Author: santiago
- */
-
 #ifndef TRUNK_BILLIONWORDS_HEADERS_GENERADORARCHIVOGREP_H_
 #define TRUNK_BILLIONWORDS_HEADERS_GENERADORARCHIVOGREP_H_
 
