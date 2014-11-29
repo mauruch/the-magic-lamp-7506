@@ -40,7 +40,7 @@ string NgramDataRetriever::getAllBigramsGivenAUnigram(string unigram) {
 
 }
 
-int NgramDataRetriever::getWeight(string ngram) {
+string NgramDataRetriever::getWeight(string ngram) {
 
 	vector<string> stringsVector;
 	StringUtils::removeSpaces(ngram);
