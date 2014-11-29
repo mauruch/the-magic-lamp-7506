@@ -2,18 +2,11 @@
 #include "../headers/StringUtils.h"
 #include "../headers/CONSTANTES.h"
 #include "../headers/ProbabilityUtils.h"
+#include "../headers/NgramDataRetriever.h"
 #include <limits>
 #include <cstdlib>
-NGram::NGram(string ngramAddress) {
-	//a modo de inicializador
-	this->ngramAddress = ngramAddress;
-}
 
-NGram::~NGram() {
-	// TODO Auto-generated destructor stub
-}
-
-string NGram::findMissingWord(vector<string> vectorOfTheLine, int wordPosition) {
+/*string NGram::findMissingWord(vector<string> vectorOfTheLine, int wordPosition) {
 	string ngramExp = "";
 	if (wordPosition < 2){
         //ARMAR BIGRAMA Y BUSCAR TODOS LOS TRI DADO EL BI
@@ -25,16 +18,9 @@ string NGram::findMissingWord(vector<string> vectorOfTheLine, int wordPosition) 
 		ngramExp = ProbabilityUtils::getNgramExp(vectorOfTheLine, wordPosition - 1, BIGRAM_EXPRESSION);
 		NgramDataRetriever::getAllTrigramsGivenABigram(ngramExp);
 	}
+}*/
 
-
-
-
-
-
-
-}
-
-void NGram::fillTheMissingWord(string *lineOfText){
+/*void NGram::fillTheMissingWord(string *lineOfText){
 	string finalNGram = "";
 	string wordToAdd = "";
 	vector<string> vectorOfTheLine = StringUtils::split(*lineOfText,' ');
@@ -53,7 +39,7 @@ void NGram::fillTheMissingWord(string *lineOfText){
 	}
 	lineOfText = &finalNGram;
 return;
-}
+}*/
 
 unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
 	string searchNgram;
