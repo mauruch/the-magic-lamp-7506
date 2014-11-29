@@ -43,11 +43,11 @@ string NgramDataRetriever::getExactNgram(string ngram, int ngramIdentifier) {
 }
 
 string NgramDataRetriever::getAllTrigramsGivenABigram(string bigram) {
-	return exec("grep ^" + bigram + "  ngram_tri.merged");
+	return exec("grep '^" + bigram + "'  ngram_tri.merged");
 }
 
 string NgramDataRetriever::getAllBigramsGivenAUnigram(string unigram) {
-	return exec("grep ^" + unigram + "\s'" + " ngram_bi.merged");
+	return exec("grep '^" + unigram + "\s'" + "' ngram_bi.merged");
 }
 
 long NgramDataRetriever::getWeight(string ngramResult) {
