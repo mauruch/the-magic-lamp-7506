@@ -17,6 +17,8 @@ public:
 	static string getAllTrigramsGivenABigram(string bigram);
 	static string getAllBigramsGivenAUnigram(string unigram);
 	static long getWeight(string ngramResult);
+	//va a servir para cambiar el . que es un wildcard en regular expressions
+	void convertNgramForGrepUsage(string *ngram);
 
 
 };
