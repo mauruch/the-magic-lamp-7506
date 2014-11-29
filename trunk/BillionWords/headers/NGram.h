@@ -19,34 +19,14 @@ public:
 	virtual ~NGram();
 
 	/**
-	 * return the weight
-	 * ngram: 'word1 word2.. wordN weight
-	 */
-	unsigned int getWeight(string ngram);
-	/**
 	 * will return the modified lineOfText with the missing word, ready to be put in the file
 	 */
 	void fillTheMissingWord(string *lineOfText);
-	/**
-	 * va a ser para remover las wildcards de las regular expressions
-	 */
-	void convertNgramForGrepUsage(string *ngram);
 	/*
-	 * todo definir comportamiento
+	 * va a decir cual es la palabra que falta dado un contexto
 	 */
-	double getProbability(vector<string> line, int counter);
-	/*
-	 * todo definir comportamiento
-	 */
-	double get3GramProbability(string threeGram);
-	/*
-	 * todo definir comportamiento
-	 */
-	double get2GramProbability(string biGram);
-	/*
-	 * todo definir comportamiento
-	 */
-	double get1GramProbability(string uniGram);
+	string findMissingWord(string context);
+
 	/*
 	 * Nos dice en que posicion falta la palabra, ejemplo, si tengo I running, y la frase deberia ser
 	 * I am running, devuelve 1, que es la posicion donde deberia haber una palabra
