@@ -6,11 +6,10 @@
 
 double ProbabilityUtils::getUnigramProbability(string unigram) {
 	string result;
-	result = NgramDataRetriever::getExactNgram(unigram);
+	result = NgramDataRetriever::getExactNgram(unigram, UNIGRAM_EXPRESSION);
 	double unigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
-	result = NgramDataRetriever::getAllUnigrams();
-	double sumOfAllUnigrams = NgramDataRetriever::getWeight(result);
+	double sumOfAllUnigrams = NgramDataRetriever::getUnigramTotalWeight();
 
 	return unigramWeight/sumOfAllUnigrams; //Probabilidad del 1gram
 
@@ -18,7 +17,7 @@ double ProbabilityUtils::getUnigramProbability(string unigram) {
 
 double ProbabilityUtils::getBigramProbability(string bigram) {
 	string result;
-	result = NgramDataRetriever::getExactNgram(bigram);
+	result = NgramDataRetriever::getExactNgram(bigram, BIGRAM_EXPRESSION);
 	double bigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
 	vector<string> bigramSplit = StringUtils::split(bigram, ' ');
@@ -34,7 +33,7 @@ double ProbabilityUtils::getBigramProbability(string bigram) {
 
 double ProbabilityUtils::getTrigramProbability(string trigram) { //the cat is
 	string result;
-	result = NgramDataRetriever::getExactNgram(trigram);
+	result = NgramDataRetriever::getExactNgram(trigram, TRIGRAM_EXPRESSION);
 	double trigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
 	vector<string> trigramSplit = StringUtils::split(trigram, ' ');
@@ -51,7 +50,7 @@ double interpolate(double unigramProbability, double bigramProbability, double t
 	double unigramWeigth = 0.33;
 	double bigramWeigth = 0.33;
 	double trigramWeigth = 0.33;
-	return	unigramWeigth*unigramProbability + bigramWeigth*bigramProbability + unigramWeigth*unigramProbability;
+	return	unigramWeigth*unigramProbability + bigramWeigth*bigramProbability + trigramWeigth*unigramProbability;
 }
 
 string getNgramExp(vector<string> line, int wordPosition, int gramLevel){
@@ -68,7 +67,6 @@ double ProbabilityUtils::getWordProbability(vector<string> line, int wordPositio
 	double trigramProbability = (double)0;
 	double bigramProbability = (double)0;
 	double unigramProbability = (double)0;
-	double wordProbability = (double)0;
 	if (wordPosition > 1){
 		string trigramExp = getNgramExp(line, wordPosition, TRIGRAM_EXPRESSION);
 		getTrigramProbability(trigramExp);
