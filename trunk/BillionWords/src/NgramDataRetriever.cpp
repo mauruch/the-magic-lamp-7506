@@ -5,8 +5,8 @@
 NgramDataRetriever::NgramDataRetriever() {
 }
 
-std::string exec(char* cmd) {
-    FILE* pipe = popen(cmd, "r");
+std::string exec(string cmd) {
+    FILE* pipe = popen(cmd.c_str(), "r");
     if (!pipe) return "ERROR";
     char buffer[128];
     std::string result = "";
@@ -19,32 +19,30 @@ std::string exec(char* cmd) {
 }
 
 string NgramDataRetriever::getAllUnigrams(){
-	char* command = 'grep ^[^[:space:]][  ]';
-	return exec(command);
+	string result = exec("grep ^[^[:space:]][  ] ngram.merged");
+	return result;
 }
 
 string NgramDataRetriever::getExactNgram(string ngram) {
-	char* command = 'grep ^' + ngram + '    ';
-	return exec(command);
+	return exec("grep ^" + ngram + "     ngram.merged");
 }
 
 string NgramDataRetriever::getAllTrigramsGivenABigram(string bigram) {
-	char* command = 'grep ^' + bigram + ' ';
-	return exec(command);
-
+	return exec("grep ^" + bigram + "  ngram.merged");
 }
 
 string NgramDataRetriever::getAllBigramsGivenAUnigram(string unigram) {
-	char* command = 'grep ^' + unigram + '\s[^[:space:]]\+[     ]';
-	return exec(command);
-
+	return exec("grep ^" + unigram + "\s[^[:space:]]\+[     ] ngram.merged");
 }
 
-string NgramDataRetriever::getWeight(string ngram) {
-
-	vector<string> stringsVector;
-	StringUtils::removeSpaces(ngram);
-	stringsVector = StringUtils::split(ngram, ' ');
-	return stringsVector.at(stringsVector.size() -1);
-
+long NgramDataRetriever::getWeight(string ngramResult) {
+	long sumOfWeights = 0;
+	vector<string> lines = StringUtils::split(ngramResult, '\n');
+	for(int i=0; i < lines.size(); i++){
+		long weigth = 0;
+		string weightString = StringUtils::split(lines[i], '\t')[1];
+		weigth = atoll(weightString.c_str());
+		sumOfWeights += weigth;
+	}
+	return sumOfWeights;
 }

@@ -16,7 +16,7 @@ public:
 	static string getAllUnigrams();
 	static string getAllTrigramsGivenABigram(string bigram);
 	static string getAllBigramsGivenAUnigram(string unigram);
-	static string getWeight(string ngram);
+	static long getWeight(string ngramResult);
 
 
 };
