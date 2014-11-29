@@ -1,6 +1,7 @@
 #include "../headers/NGram.h"
 #include "../headers/StringUtils.h"
 #include "../headers/CONSTANTES.h"
+#include "../headers/ProbabilityUtils.h"
 #include <limits>
 #include <cstdlib>
 NGram::NGram(string ngramAddress) {
@@ -12,8 +13,25 @@ NGram::~NGram() {
 	// TODO Auto-generated destructor stub
 }
 
-string NGram::findMissingWord(string context){
-	return ProbabilityUtils::getWordFromContext(context);
+string NGram::findMissingWord(vector<string> vectorOfTheLine, int wordPosition) {
+	string ngramExp = "";
+	if (wordPosition < 2){
+        //ARMAR BIGRAMA Y BUSCAR TODOS LOS TRI DADO EL BI
+		//LUEGO HACERLE BACKOFF A CADA UNO DE LOS TRI
+		//(QUEDARME CON LA PROB MAS ALTA DE LA ULTIMA PALABRA DEL TRI)
+		ngramExp = ProbabilityUtils::getNgramExp(vectorOfTheLine, wordPosition - 1, UNIGRAM_EXPRESSION);
+		string result =  NgramDataRetriever::getAllBigramsGivenAUnigram(ngramExp);
+	} else {
+		ngramExp = ProbabilityUtils::getNgramExp(vectorOfTheLine, wordPosition - 1, BIGRAM_EXPRESSION);
+		NgramDataRetriever::getAllTrigramsGivenABigram(ngramExp);
+	}
+
+
+
+
+
+
+
 }
 
 void NGram::fillTheMissingWord(string *lineOfText){
@@ -23,7 +41,6 @@ void NGram::fillTheMissingWord(string *lineOfText){
 	unsigned int whereToAdd = this->whereIsMissingTheWord(vectorOfTheLine);	//aca vamos a saber donde vamos a tener que meter una palabra porque es la que falta
 	wordToAdd = this->whichWordToAdd(vectorOfTheLine,whereToAdd);
 
-	//ahora que se donde debo insertar la palabra
 	for (unsigned int counter = 0; counter < (vectorOfTheLine.size()); counter++) {
 		if (counter == whereToAdd){
 			finalNGram.append(" ");

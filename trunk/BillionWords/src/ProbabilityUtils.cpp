@@ -6,7 +6,7 @@
 
 double ProbabilityUtils::getUnigramProbability(string unigram) {
 	string result;
-	result = NgramDataRetriever::getExactNgram(unigram, UNIGRAM_EXPRESSION);
+	result = NgramDataRetriever::getExactNgram(unigram);
 	double unigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
 	double sumOfAllUnigrams = NgramDataRetriever::getUnigramTotalWeight();
@@ -17,7 +17,7 @@ double ProbabilityUtils::getUnigramProbability(string unigram) {
 
 double ProbabilityUtils::getBigramProbability(string bigram) {
 	string result;
-	result = NgramDataRetriever::getExactNgram(bigram, BIGRAM_EXPRESSION);
+	result = NgramDataRetriever::getExactNgram(bigram);
 	double bigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
 	vector<string> bigramSplit = StringUtils::split(bigram, ' ');
@@ -33,7 +33,7 @@ double ProbabilityUtils::getBigramProbability(string bigram) {
 
 double ProbabilityUtils::getTrigramProbability(string trigram) { //the cat is
 	string result;
-	result = NgramDataRetriever::getExactNgram(trigram, TRIGRAM_EXPRESSION);
+	result = NgramDataRetriever::getExactNgram(trigram);
 	double trigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
 	vector<string> trigramSplit = StringUtils::split(trigram, ' ');
@@ -53,11 +53,22 @@ double interpolate(double unigramProbability, double bigramProbability, double t
 	return	unigramWeigth*unigramProbability + bigramWeigth*bigramProbability + trigramWeigth*unigramProbability;
 }
 
-string getNgramExp(vector<string> line, int wordPosition, int gramLevel){
+string ProbabilityUtils::getNgramExp(vector<string> line, int wordPosition, int gramLevel){
 	string gram = "";
-	gram.append(line.at(wordPosition -2)).append(" ");
-	gram.append(line.at(wordPosition -1)).append(" ");
-	gram.append(line.at(wordPosition));
+	switch (gramLevel) {
+	case 1:
+		gram.append(line.at(wordPosition));
+		break;
+	case 2:
+		gram.append(line.at(wordPosition -1)).append(" ");
+		gram.append(line.at(wordPosition));
+		break;
+	case 3:
+		gram.append(line.at(wordPosition -2)).append(" ");
+		gram.append(line.at(wordPosition -1)).append(" ");
+		gram.append(line.at(wordPosition));
+		break;
+	}
 	return gram;
 }
 
