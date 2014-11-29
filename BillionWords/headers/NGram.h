@@ -25,7 +25,7 @@ public:
 	/*
 	 * va a decir cual es la palabra que falta dado un contexto
 	 */
-	string findMissingWord(string context);
+	string findMissingWord(vector<string> vectorOfTheLine, int wordPosition);
 
 	/*
 	 * Nos dice en que posicion falta la palabra, ejemplo, si tengo I running, y la frase deberia ser

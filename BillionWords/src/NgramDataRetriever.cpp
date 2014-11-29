@@ -50,7 +50,7 @@ long NgramDataRetriever::getWeight(string ngramResult) {
 	return sumOfWeights;
 }
 
-void NGram::convertNgramForGrepUsage(string *ngram) {
+/*void NGram::convertNgramForGrepUsage(string *ngram) {
 	for (size_t pos = 0;; pos += LARGO_BARRA_PUNTO)	//el dos es porque \. tiene 2 caracteres
 			{
 		pos = (*ngram).find('.', pos);
@@ -59,4 +59,4 @@ void NGram::convertNgramForGrepUsage(string *ngram) {
 		(*ngram).erase(pos, LARGO_PUNTO);	//el 1 es porque . tiene 1 caracter
 		(*ngram).insert(pos, "/.");
 	}
-}
+}*/

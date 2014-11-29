@@ -20,6 +20,8 @@ public:
 
 	static double getUnigramProbability(string unigram);
 
+	static string getNgramExp(vector<string> line, int wordPosition, int gramLevel);
+
 
 
 };
