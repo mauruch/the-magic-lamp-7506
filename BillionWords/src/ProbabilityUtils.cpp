@@ -1,7 +1,7 @@
 #include "../headers/ProbabilityUtils.h"
-#include "../headers/ProbabilityUtils.h"
 #include "../headers/NgramDataRetriever.h"
 #include "../headers/StringUtils.h"
+#include "../headers/CONSTANTES.h"
 
 
 double ProbabilityUtils::getUnigramProbability(string unigram) {
@@ -47,22 +47,38 @@ double ProbabilityUtils::getTrigramProbability(string trigram) { //the cat is
 
 }
 
+double interpolate(double unigramProbability, double bigramProbability, double trigramProbability){
+	double unigramWeigth = 0.33;
+	double bigramWeigth = 0.33;
+	double trigramWeigth = 0.33;
+	return	unigramWeigth*unigramProbability + bigramWeigth*bigramProbability + unigramWeigth*unigramProbability;
+}
+
+string getNgramExp(vector<string> line, int wordPosition, int gramLevel){
+	string gram = "";
+	gram.append(line.at(wordPosition -2)).append(" ");
+	gram.append(line.at(wordPosition -1)).append(" ");
+	gram.append(line.at(wordPosition));
+	return gram;
+}
+
 
 double ProbabilityUtils::getWordProbability(vector<string> line, int wordPosition) {
 
 	double trigramProbability = (double)0;
+	double bigramProbability = (double)0;
+	double unigramProbability = (double)0;
+	double wordProbability = (double)0;
 	if (wordPosition > 1){
-		string gram = "";
-		gram.append(line.at(wordPosition -2)).append(" ");
-		gram.append(line.at(wordPosition -1)).append(" ");
-		gram.append(line.at(wordPosition));
-		trigramProbability = getTrigramProbability(gram);
+		string trigramExp = getNgramExp(line, wordPosition, TRIGRAM_EXPRESSION);
+		getTrigramProbability(trigramExp);
 	}
+	string bigramExp = getNgramExp(line, wordPosition, BIGRAM_EXPRESSION);
+	bigramProbability = getBigramProbability(bigramExp);
 
-	//TODO refactor
+	string unigramExp = getNgramExp(line, wordPosition, UNIGRAM_EXPRESSION);
+	unigramProbability = getUnigramProbability(unigramExp);
 
-	//double bigramProbability = getBigramProbability();
-	//double unigramProbability = getUnigramProbability();
+	return interpolate(unigramProbability, bigramProbability, trigramProbability);
 }
-
 
