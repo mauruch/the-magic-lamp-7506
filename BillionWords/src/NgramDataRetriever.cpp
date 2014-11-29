@@ -23,31 +23,19 @@ long NgramDataRetriever::getUnigramTotalWeight() {
 	return 768648884;
 }
 
-string NgramDataRetriever::getExactNgram(string ngram, int ngramIdentifier) {
-	string command = "grep '^";
+string NgramDataRetriever::getExactNgram(string ngram) {
+	string command = "sgrep '";
 	command.append(ngram);
-	command.append("	' "); //<tab>'
-	string unigramFile;
-	switch (ngramIdentifier) {
-	case 1:
-		command.append("ngram_uni.merged");
-		break;
-	case 2:
-		command.append("ngram_bi.merged");
-		break;
-	case 3:
-		command.append("ngram_tri.merged");
-		break;
-	}
+	command.append("	' ngram_tri.merged");
 	return exec(command);
 }
 
 string NgramDataRetriever::getAllTrigramsGivenABigram(string bigram) {
-	return exec("grep '^" + bigram + "'  ngram_tri.merged");
+	return exec("sgrep '" + bigram + " ' ngram_tri.merged");
 }
 
 string NgramDataRetriever::getAllBigramsGivenAUnigram(string unigram) {
-	return exec("grep '^" + unigram + "\s'" + "' ngram_bi.merged");
+	return exec("sgrep '" + unigram + " ' ngram_bi.merged");
 }
 
 long NgramDataRetriever::getWeight(string ngramResult) {
@@ -62,12 +50,13 @@ long NgramDataRetriever::getWeight(string ngramResult) {
 	return sumOfWeights;
 }
 
-void NGram::convertNgramForGrepUsage(string *ngram){
-	   for( size_t pos = 0; ; pos += LARGO_BARRA_PUNTO)	//el dos es porque \. tiene 2 caracteres
-	 	{
-	         pos = (*ngram).find( '.', pos );
-	         if( pos == string::npos ) break;
-	         (*ngram).erase( pos, LARGO_PUNTO);	//el 1 es porque . tiene 1 caracter
-	         (*ngram).insert( pos, "/.");
-	     }
+void NGram::convertNgramForGrepUsage(string *ngram) {
+	for (size_t pos = 0;; pos += LARGO_BARRA_PUNTO)	//el dos es porque \. tiene 2 caracteres
+			{
+		pos = (*ngram).find('.', pos);
+		if (pos == string::npos)
+			break;
+		(*ngram).erase(pos, LARGO_PUNTO);	//el 1 es porque . tiene 1 caracter
+		(*ngram).insert(pos, "/.");
+	}
 }
