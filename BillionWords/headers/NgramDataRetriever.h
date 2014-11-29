@@ -12,8 +12,8 @@ public:
 
 	NgramDataRetriever();
 
-	static string getExactNgram(string ngram);
-	static string getAllUnigrams();
+	static string getExactNgram(string ngram, int ngramIdentifier);
+	static long getUnigramTotalWeight();
 	static string getAllTrigramsGivenABigram(string bigram);
 	static string getAllBigramsGivenAUnigram(string unigram);
 	static long getWeight(string ngramResult);
