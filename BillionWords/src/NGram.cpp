@@ -2,7 +2,6 @@
 #include "../headers/StringUtils.h"
 #include "../headers/CONSTANTES.h"
 #include "../headers/ProbabilityUtils.h"
-#include "../headers/NgramDataRetriever.h"
 #include <limits>
 #include <cstdlib>
 
@@ -41,14 +40,14 @@
 return;
 }*/
 
-unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
+unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine, HashModel& model){
 	string searchNgram;
-	unsigned int whereToAdd;
-	float minorProbability = ((float)1);
+	unsigned int whereToAdd = 1;
+	float minorProbability = ((float)90);
 	int numberOfWords = vectorOfTheLine.size();
 
 	for (unsigned int counter = 1; counter < (numberOfWords -1); counter++) {
-		float wordProbability = ProbabilityUtils::getWordProbability(vectorOfTheLine, counter);
+		float wordProbability = ProbabilityUtils::getWordProbability(vectorOfTheLine, counter, model);
 		//obtengo el peso
 		if (wordProbability < minorProbability) {
 			minorProbability = wordProbability;
@@ -56,6 +55,26 @@ unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
 		}
 	}
 	return whereToAdd;
+}
+
+string NGram::getNgramExp(vector<string> line, int wordPosition,
+		int gramLevel) {
+	string gram = "";
+	switch (gramLevel) {
+	case 1:
+		gram.append(line.at(wordPosition));
+		break;
+	case 2:
+		gram.append(line.at(wordPosition - 1)).append(" ");
+		gram.append(line.at(wordPosition));
+		break;
+	case 3:
+		gram.append(line.at(wordPosition - 2)).append(" ");
+		gram.append(line.at(wordPosition - 1)).append(" ");
+		gram.append(line.at(wordPosition));
+		break;
+	}
+	return gram;
 }
 
 string NGram::whichWordToAdd(vector<string> vectorOfTheLine,unsigned int whereToAdd){

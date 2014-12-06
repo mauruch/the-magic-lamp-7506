@@ -1,91 +1,93 @@
 #include "../headers/ProbabilityUtils.h"
-#include "../headers/NgramDataRetriever.h"
-#include "../headers/StringUtils.h"
-#include "../headers/CONSTANTES.h"
 
+float ProbabilityUtils::getUnigramProbability(string unigram, HashModel& model) {
 
-float ProbabilityUtils::getUnigramProbability(string unigram) {
-	string result;
-	result = NgramDataRetriever::getExactNgram(unigram, UNIGRAM_EXPRESSION);
-	float unigramWeight = NgramDataRetriever::getWeight(result); //check empty string
+	string weightAsString = model.getUnigrams()[unigram];
+	float weight = atol(weightAsString.c_str());
 
-	float sumOfAllUnigrams = NgramDataRetriever::getUnigramTotalWeight();
-	return 1; //Probabilidad del 1gram
+	float sumOfAllUnigrams = UNIGRAMTOTALWEIGHT;
+	return (weight / sumOfAllUnigrams); //Probabilidad del 1gram
 
 }
 
-float ProbabilityUtils::getBigramProbability(string bigram) {
+float ProbabilityUtils::getBigramProbability(vector<string> bigram,  HashModel& model) {
 
-	string result = NgramDataRetriever::getExactNgram(bigram, BIGRAM_EXPRESSION);
-	float bigramWeight = NgramDataRetriever::getWeight(result); //check empty string
-	vector<string> bigramSplit = StringUtils::split(bigram, ' ');
-	string unigram = bigramSplit.at(0);
+	long uni_hashed = StringUtils::hashCode(bigram[0]);
 
-	result = NgramDataRetriever::getAllBigramsGivenAUnigram(unigram);
-	float sumOfAllBigrams = NgramDataRetriever::getWeight(result);
+	map<string, string> uni_map = model.getBigrams()[uni_hashed];
+	typedef map<string, string>::iterator it_type;
 
-	return 1; //Probabilidad del 2gram
+	float sumOfAllBigrams = 0;
+	for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
+			iterator++) {
+		sumOfAllBigrams += atoi(iterator->second.c_str());
+	}
 
-}
+	float weightBigram = atoi(
+			model.getBigrams()[uni_hashed][bigram[1]].c_str());
 
-
-float ProbabilityUtils::getTrigramProbability(string trigram) { //the cat is
-	string result;
-	result = NgramDataRetriever::getExactNgram(trigram, TRIGRAM_EXPRESSION);
-	float trigramWeight = NgramDataRetriever::getWeight(result); //check empty string
-
-	vector<string> trigramSplit = StringUtils::split(trigram, ' ');
-	string bigram = trigramSplit.at(0).append(trigramSplit.at(1));
-
-	result = NgramDataRetriever::getAllTrigramsGivenABigram(bigram);
-	float sumOfAllTrigrams = NgramDataRetriever::getWeight(result);
-
-	return 1; //Probabilidad del 3gram
+	return (weightBigram / sumOfAllBigrams);
 
 }
 
-float interpolate(double unigramProbability, double bigramProbability, double trigramProbability){
+float ProbabilityUtils::getTrigramProbability(vector<string> trigram, HashModel& model) { //the cat is
+
+	long uni_hashed = StringUtils::hashCode(trigram[0]);
+	long bi_hashed = StringUtils::hashCode(
+			StringUtils::ltos(uni_hashed) + trigram[1]);
+
+	map<string, string> bi_map = model.getTrigrams()[bi_hashed];
+	typedef map<string, string>::iterator it_type;
+
+	float sumOfAllTrigrams = 0;
+	for (it_type iterator = bi_map.begin(); iterator != bi_map.end();
+			iterator++) {
+		sumOfAllTrigrams += atoi(iterator->second.c_str());
+	}
+
+	float weightTrigram = atoi(
+			model.getTrigrams()[bi_hashed][trigram[2]].c_str());
+
+	return (weightTrigram / sumOfAllTrigrams);
+
+}
+
+float interpolate(double unigramProbability, double bigramProbability,
+		double trigramProbability) {
 	float unigramWeigth = 0.33;
 	float bigramWeigth = 0.33;
 	float trigramWeigth = 0.33;
-	return	unigramWeigth*unigramProbability + bigramWeigth*bigramProbability + trigramWeigth*unigramProbability;
+	return unigramWeigth * unigramProbability + bigramWeigth * bigramProbability
+			+ trigramWeigth * unigramProbability;
 }
 
-string ProbabilityUtils::getNgramExp(vector<string> line, int wordPosition, int gramLevel){
-	string gram = "";
-	switch (gramLevel) {
-	case 1:
-		gram.append(line.at(wordPosition));
-		break;
-	case 2:
-		gram.append(line.at(wordPosition -1)).append(" ");
-		gram.append(line.at(wordPosition));
-		break;
-	case 3:
-		gram.append(line.at(wordPosition -2)).append(" ");
-		gram.append(line.at(wordPosition -1)).append(" ");
-		gram.append(line.at(wordPosition));
-		break;
+float ProbabilityUtils::getWordProbability(vector<string> line,
+		int wordPosition, HashModel& model) {
+
+	float trigramProbability = (float) 0;
+	float bigramProbability = (float) 0;
+	float unigramProbability = (float) 0;
+
+	string ngramExpression;
+
+	if (wordPosition > 1) {
+		ngramExpression = NGram::getNgramExp(line, wordPosition,
+				TRIGRAM_EXPRESSION);
+	} else {
+		ngramExpression = NGram::getNgramExp(line, wordPosition,
+				BIGRAM_EXPRESSION);
 	}
-	return gram;
-}
 
+	vector<string> ngram_splitted = StringUtils::split(ngramExpression, ' ');
 
-float ProbabilityUtils::getWordProbability(vector<string> line, int wordPosition) {
+	if (wordPosition > 1)
+		trigramProbability = getTrigramProbability(ngram_splitted, model);
 
-	float trigramProbability = (float)0;
-	float bigramProbability = (float)0;
-	float unigramProbability = (float)0;
-	if (wordPosition > 1){
-		string trigramExp = getNgramExp(line, wordPosition, TRIGRAM_EXPRESSION);
-		trigramProbability = getTrigramProbability(trigramExp);
-	}
-	string bigramExp = getNgramExp(line, wordPosition, BIGRAM_EXPRESSION);
-	bigramProbability = getBigramProbability(bigramExp);
+	unigramProbability = getUnigramProbability(ngram_splitted[0], model);
 
-	string unigramExp = getNgramExp(line, wordPosition, UNIGRAM_EXPRESSION);
-	unigramProbability = getUnigramProbability(unigramExp);
+	bigramProbability = getBigramProbability(ngram_splitted, model);
 
-	return interpolate(unigramProbability, bigramProbability, trigramProbability);
+	return interpolate(unigramProbability, bigramProbability,
+			trigramProbability);
 }
 

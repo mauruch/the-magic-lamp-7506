@@ -34,6 +34,11 @@ public:
 
 	static long hashCode(string stringToHash);
 
+	/*
+	 * return string given a long
+	 */
+	static string ltos(long longToCast);
+
 
 
 };

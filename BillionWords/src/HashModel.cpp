@@ -17,45 +17,40 @@ HashModel::~HashModel() {
 	// TODO Auto-generated destructor stub
 }
 
-map<string, string> HashModel::unigrams;
-map<long, map<string, string> > HashModel::bigrams;
-map<long, map<string, string> > HashModel::trigrams;
 
 void HashModel::initModel() {
-	cout << "inicializando HashModel::initModel()" << endl;
 
-	ifstream fileTest_v2("ngrams_cleaned_up5");
+	cout << "Masticando el conocimiento..." << endl;
 
-	if (fileTest_v2.is_open()) {
-		cout << "Masticando el conocimiento..." << endl;
+	ifstream ngram_file("ngram_test_aa");
+
+	if (ngram_file.is_open()) {
 		string lineOfText;
-		while (getline(fileTest_v2, lineOfText)) {
+		while (getline(ngram_file, lineOfText)) {
 			StringUtils::replace(lineOfText, "\t", " ");
 			vector<string> vector = StringUtils::split(lineOfText, ' ');
 			string unigram = vector.at(0);
 			if (vector.size() == 2) {
-				getUnigrams()[unigram] = vector.at(1);
+				unigrams[unigram] = vector.at(1);
 			} else if (vector.size() == 3) {
 				long unigram_hashed = StringUtils::hashCode(unigram);
-				getBigrams()[unigram_hashed][vector.at(1)] = vector.at(2);
+				bigrams[unigram_hashed][vector.at(1)] = vector.at(2);
 			} else {
 				long unigram_hashed = StringUtils::hashCode(unigram);
-				std::string number;
-				std::stringstream strstream;
-				strstream << unigram_hashed;
-				strstream >> number;
+				string numberAsString = StringUtils::ltos(unigram_hashed);
 				long bigram_hashed = StringUtils::hashCode(
-						number + vector.at(1));
-				getTrigrams()[bigram_hashed][vector.at(2)] = vector.at(3);
+						numberAsString + vector.at(1));
+				trigrams[bigram_hashed][vector.at(2)] = vector.at(3);
 			}
 		}
-		cout << "Conocimiento incorporado!!!" << endl;
+
 	}
 
 	else {
 		cout << "Problemas al abrir los archivos" << endl;
 	}
 
+	cout << "Conocimiento incorporado!!!" << endl;
 }
 
 map<string, string> HashModel::getUnigrams() {
