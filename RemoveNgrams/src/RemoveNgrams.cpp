@@ -12,25 +12,9 @@
 #include <string>
 #include <sstream>
 #include <stdlib.h>
+#include "../../BillionWords/headers/StringUtils.h"
 
 using namespace std;
-
-vector<string> split(const string &s, char delim, vector<string> &elems) {
-	stringstream ss(s);
-	string item;
-	while (getline(ss, item, delim)) {
-		elems.push_back(item);
-	}
-	return elems;
-
-}
-
-vector<string> split(const string &s, char delim) {
-	vector<std::string> elems;
-	split(s, delim, elems);
-	return elems;
-
-}
 
 int main2(int argc, char *argv[]) {
 	std::ofstream outputFile;
@@ -43,7 +27,7 @@ int main2(int argc, char *argv[]) {
 	if (ngramas.is_open()) {
 		string lineOfText;
 		while (getline(ngramas, lineaDelNgrama)) {
-			vectorOfTheLine = split(lineaDelNgrama, '\t');
+			vectorOfTheLine = StringUtils::split(lineaDelNgrama, '\t');
 			string numero = vectorOfTheLine.back();
 			//aca filtro todas las que son menores o iguales a cinco
 			if (atoi(numero.c_str()) > 5) {
@@ -57,6 +41,7 @@ int main2(int argc, char *argv[]) {
 	}
 
 	outputFile.close();
+	ngramas.close();
 
 	return 0;
 }
