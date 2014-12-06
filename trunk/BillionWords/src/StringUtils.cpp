@@ -31,25 +31,6 @@ int StringUtils::getWeight(vector<string> &elems) {
 	return (int) ch - '0';
 }
 
-void StringUtils::removeSpaces(string& str) {
-	/* remove multiple spaces */
-	int k = 0;
-	for (int j = 0; j < str.size(); ++j) {
-		if ((str[j] != ' ') || (str[j] == ' ' && str[j + 1] != ' ')) {
-			str[k] = str[j];
-			++k;
-		}
-
-	}
-	str.resize(k);
-
-	/* remove space at the end */
-	if (str[k - 1] == ' ')
-		str.erase(str.end() - 1);
-	/* remove space at the begin */
-	if (str[0] == ' ')
-		str.erase(str.begin());
-}
 
 bool StringUtils::replace(std::string& str, const std::string& from,
 		const std::string& to) {
@@ -59,4 +40,10 @@ bool StringUtils::replace(std::string& str, const std::string& from,
 	str.replace(start_pos, from.length(), to);
 	return true;
 }
+
+long StringUtils::hashCode(string stringToHash){
+	boost::hash<std::string> string_hash;
+	return string_hash(stringToHash);
+}
+
 

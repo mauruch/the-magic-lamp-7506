@@ -12,13 +12,13 @@ public:
 
 	ProbabilityUtils();
 
-	static double getWordProbability(vector<string> line, int wordPosition);
+	static float getWordProbability(vector<string> line, int wordPosition);
 
-	static double getTrigramProbability(string trigram);
+	static float getTrigramProbability(string trigram);
 
-	static double getBigramProbability(string bigram);
+	static float getBigramProbability(string bigram);
 
-	static double getUnigramProbability(string unigram);
+	static float getUnigramProbability(string unigram);
 
 	static string getNgramExp(vector<string> line, int wordPosition, int gramLevel);
 

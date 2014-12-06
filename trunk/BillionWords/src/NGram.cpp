@@ -44,15 +44,17 @@ return;
 unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
 	string searchNgram;
 	unsigned int whereToAdd;
-	long minorProbability = std::numeric_limits<long>::max();	//le asigno el valor maximo de un int
+	float minorProbability = ((float)1);
+	int numberOfWords = vectorOfTheLine.size();
 
-	for (unsigned int counter = 1; counter < (vectorOfTheLine.size() -1); counter++) {
+	for (unsigned int counter = 1; counter < (numberOfWords -1); counter++) {
+		float wordProbability = ProbabilityUtils::getWordProbability(vectorOfTheLine, counter);
 		//obtengo el peso
-		if (ProbabilityUtils::getWordProbability(vectorOfTheLine, counter) < minorProbability){
+		if (wordProbability < minorProbability) {
+			minorProbability = wordProbability;
 			whereToAdd = counter;
 		}
 	}
-
 	return whereToAdd;
 }
 
