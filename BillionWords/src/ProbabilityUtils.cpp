@@ -4,52 +4,52 @@
 #include "../headers/CONSTANTES.h"
 
 
-double ProbabilityUtils::getUnigramProbability(string unigram) {
+float ProbabilityUtils::getUnigramProbability(string unigram) {
 	string result;
-	result = NgramDataRetriever::getExactNgram(unigram);
-	double unigramWeight = NgramDataRetriever::getWeight(result); //check empty string
+	result = NgramDataRetriever::getExactNgram(unigram, UNIGRAM_EXPRESSION);
+	float unigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
-	double sumOfAllUnigrams = NgramDataRetriever::getUnigramTotalWeight();
-
-	return unigramWeight/sumOfAllUnigrams; //Probabilidad del 1gram
+	float sumOfAllUnigrams = NgramDataRetriever::getUnigramTotalWeight();
+	return 1; //Probabilidad del 1gram
 
 }
 
-double ProbabilityUtils::getBigramProbability(string bigram) {
-	string result;
-	result = NgramDataRetriever::getExactNgram(bigram);
-	double bigramWeight = NgramDataRetriever::getWeight(result); //check empty string
+float ProbabilityUtils::getBigramProbability(string bigram) {
+
+	string result = NgramDataRetriever::getExactNgram(bigram, BIGRAM_EXPRESSION);
+
+	float bigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
 	vector<string> bigramSplit = StringUtils::split(bigram, ' ');
 	string unigram = bigramSplit.at(0);
 
 	result = NgramDataRetriever::getAllBigramsGivenAUnigram(unigram);
-	double sumOfAllBigrams = NgramDataRetriever::getWeight(result);
+	float sumOfAllBigrams = NgramDataRetriever::getWeight(result);
 
-	return bigramWeight/sumOfAllBigrams; //Probabilidad del 2gram
+	return 1; //Probabilidad del 2gram
 
 }
 
 
-double ProbabilityUtils::getTrigramProbability(string trigram) { //the cat is
+float ProbabilityUtils::getTrigramProbability(string trigram) { //the cat is
 	string result;
-	result = NgramDataRetriever::getExactNgram(trigram);
-	double trigramWeight = NgramDataRetriever::getWeight(result); //check empty string
+	result = NgramDataRetriever::getExactNgram(trigram, TRIGRAM_EXPRESSION);
+	float trigramWeight = NgramDataRetriever::getWeight(result); //check empty string
 
 	vector<string> trigramSplit = StringUtils::split(trigram, ' ');
 	string bigram = trigramSplit.at(0).append(trigramSplit.at(1));
 
 	result = NgramDataRetriever::getAllTrigramsGivenABigram(bigram);
-	double sumOfAllTrigrams = NgramDataRetriever::getWeight(result);
+	float sumOfAllTrigrams = NgramDataRetriever::getWeight(result);
 
-	return trigramWeight/sumOfAllTrigrams; //Probabilidad del 3gram
+	return 1; //Probabilidad del 3gram
 
 }
 
-double interpolate(double unigramProbability, double bigramProbability, double trigramProbability){
-	double unigramWeigth = 0.33;
-	double bigramWeigth = 0.33;
-	double trigramWeigth = 0.33;
+float interpolate(double unigramProbability, double bigramProbability, double trigramProbability){
+	float unigramWeigth = 0.33;
+	float bigramWeigth = 0.33;
+	float trigramWeigth = 0.33;
 	return	unigramWeigth*unigramProbability + bigramWeigth*bigramProbability + trigramWeigth*unigramProbability;
 }
 
@@ -73,14 +73,14 @@ string ProbabilityUtils::getNgramExp(vector<string> line, int wordPosition, int 
 }
 
 
-double ProbabilityUtils::getWordProbability(vector<string> line, int wordPosition) {
+float ProbabilityUtils::getWordProbability(vector<string> line, int wordPosition) {
 
-	double trigramProbability = (double)0;
-	double bigramProbability = (double)0;
-	double unigramProbability = (double)0;
+	float trigramProbability = (float)0;
+	float bigramProbability = (float)0;
+	float unigramProbability = (float)0;
 	if (wordPosition > 1){
 		string trigramExp = getNgramExp(line, wordPosition, TRIGRAM_EXPRESSION);
-		getTrigramProbability(trigramExp);
+		trigramProbability = getTrigramProbability(trigramExp);
 	}
 	string bigramExp = getNgramExp(line, wordPosition, BIGRAM_EXPRESSION);
 	bigramProbability = getBigramProbability(bigramExp);

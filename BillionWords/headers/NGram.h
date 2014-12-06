@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include "HashModel.h"
 using namespace std;
 
 class NGram {
