@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
 	ifstream fileTest_v2("test_v2.txt");
 
 	if (fileTest_v2.is_open()) {
+		cout << "inicializando el proceso principal" << endl;
 		string lineOfText;
 		//Skip first line
 		getline(fileTest_v2, lineOfText);
@@ -36,10 +37,7 @@ int main(int argc, char *argv[]) {
 		}
 
 	} else {
-		cout << "Problemas al abrir los archivos" << endl;
-		cout << "Probar viendo si las direcciones pasadas son correctas"
-				<< endl;
-
+		cout << "Problemas al abrir test_v2.txt en main" << endl;
 		return ERROR_AL_ABRIR_ARCHIVO;
 	}
 

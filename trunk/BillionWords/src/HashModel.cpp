@@ -22,12 +22,12 @@ map<long, map<string, string> > HashModel::bigrams;
 map<long, map<string, string> > HashModel::trigrams;
 
 void HashModel::initModel() {
-
-	cout << "Masticando el conocimiento..." << endl;
+	cout << "inicializando HashModel::initModel()" << endl;
 
 	ifstream fileTest_v2("ngrams_cleaned_up5");
 
 	if (fileTest_v2.is_open()) {
+		cout << "Masticando el conocimiento..." << endl;
 		string lineOfText;
 		while (getline(fileTest_v2, lineOfText)) {
 			StringUtils::replace(lineOfText, "\t", " ");
@@ -49,14 +49,13 @@ void HashModel::initModel() {
 				getTrigrams()[bigram_hashed][vector.at(2)] = vector.at(3);
 			}
 		}
-
+		cout << "Conocimiento incorporado!!!" << endl;
 	}
 
 	else {
 		cout << "Problemas al abrir los archivos" << endl;
 	}
 
-	cout << "Conocimiento incorporado!!!" << endl;
 }
 
 map<string, string> HashModel::getUnigrams() {

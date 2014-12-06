@@ -32,7 +32,7 @@ vector<string> split(const string &s, char delim) {
 
 }
 
-int main(int argc, char *argv[]) {
+int main2(int argc, char *argv[]) {
 	std::ofstream outputFile;
 	outputFile.open("ngrams_cleaned_up5", std::ios_base::app);
 
