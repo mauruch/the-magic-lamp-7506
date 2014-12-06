@@ -17,9 +17,7 @@ float ProbabilityUtils::getUnigramProbability(string unigram) {
 float ProbabilityUtils::getBigramProbability(string bigram) {
 
 	string result = NgramDataRetriever::getExactNgram(bigram, BIGRAM_EXPRESSION);
-
 	float bigramWeight = NgramDataRetriever::getWeight(result); //check empty string
-
 	vector<string> bigramSplit = StringUtils::split(bigram, ' ');
 	string unigram = bigramSplit.at(0);
 

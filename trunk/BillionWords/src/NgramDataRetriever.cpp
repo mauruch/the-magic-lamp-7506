@@ -19,6 +19,7 @@ string NgramDataRetriever::getExactNgram(string ngram, int ngramIdentifier) {
 		result = HashModel::getUnigrams()[ngram];
 		break;
 	}
+	return "unString";
 }
 
 string NgramDataRetriever::getAllTrigramsGivenABigram(string bigram) {
@@ -34,10 +35,11 @@ string NgramDataRetriever::getAllBigramsGivenAUnigram(string unigram) {
 long NgramDataRetriever::getWeight(string ngramResult) {
 	long sumOfWeights = 0;
 	vector<string> lines = StringUtils::split(ngramResult, '\n');
-	for (int i = 0; i < lines.size(); i++) {
+	//	TODO FIJARSE POR QUE ACA LE PONGO EL -1 FUNCIONA HASTA QUE TIRA UN ERROR, SERA ALGO DE OUT OF BOUNDS?
+	for (int i = 0; i < lines.size()-1; i++) {
 		long weigth = 0;
 		string weightString = StringUtils::split(lines[i], '\t')[1];
-		weigth = atoll(weightString.c_str());
+		weigth = atol(weightString.c_str());
 		sumOfWeights += weigth;
 	}
 	return sumOfWeights;
