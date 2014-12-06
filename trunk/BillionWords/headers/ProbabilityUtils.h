@@ -3,6 +3,11 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include "HashModel.h"
+#include "ProbabilityUtils.h"
+#include "StringUtils.h"
+#include "CONSTANTES.h"
+#include "NGram.h""
 using namespace std;
 
 
@@ -12,17 +17,13 @@ public:
 
 	ProbabilityUtils();
 
-	static float getWordProbability(vector<string> line, int wordPosition);
+	static float getWordProbability(vector<string> line, int wordPosition, HashModel& model);
 
-	static float getTrigramProbability(string trigram);
+	static float getTrigramProbability(vector<string> trigram, HashModel& model);
 
-	static float getBigramProbability(string bigram);
+	static float getBigramProbability(vector<string> bigram, HashModel& model);
 
-	static float getUnigramProbability(string unigram);
-
-	static string getNgramExp(vector<string> line, int wordPosition, int gramLevel);
-
-
+	static float getUnigramProbability(string unigram, HashModel& model);
 
 };
 

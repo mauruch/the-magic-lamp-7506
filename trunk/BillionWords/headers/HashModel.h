@@ -18,15 +18,15 @@ using namespace std;
 
 class HashModel {
 private:
-	static map<string, string> unigrams;
-	static map<long, map<string, string> > bigrams;
-	static map<long, map<string, string> > trigrams;
+	map<string, string> unigrams;
+	map<long, map<string, string> > bigrams;
+	map<long, map<string, string> > trigrams;
 public:
 	HashModel();
 	void initModel();
-	static map<string, string> getUnigrams();
-	static map<long, std::map<string, string> > getBigrams();
-	static map<long, std::map<string, string> > getTrigrams();
+	map<string, string> getUnigrams();
+	map<long, std::map<string, string> > getBigrams();
+	map<long, std::map<string, string> > getTrigrams();
 	virtual ~HashModel();
 };
 

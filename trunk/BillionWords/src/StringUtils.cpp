@@ -31,7 +31,6 @@ int StringUtils::getWeight(vector<string> &elems) {
 	return (int) ch - '0';
 }
 
-
 bool StringUtils::replace(std::string& str, const std::string& from,
 		const std::string& to) {
 	size_t start_pos = str.find(from);
@@ -41,9 +40,16 @@ bool StringUtils::replace(std::string& str, const std::string& from,
 	return true;
 }
 
-long StringUtils::hashCode(string stringToHash){
+string StringUtils::ltos(long longToCast) {
+	string s;
+	stringstream strstream;
+	strstream << longToCast;
+	strstream >> s;
+	return s;
+}
+
+long StringUtils::hashCode(string stringToHash) {
 	boost::hash<std::string> string_hash;
 	return string_hash(stringToHash);
 }
-
 
