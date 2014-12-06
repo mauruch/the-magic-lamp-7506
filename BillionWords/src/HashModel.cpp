@@ -1,10 +1,3 @@
-/*
- * HashModel.cpp
- *
- *  Created on: 5/12/2014
- *      Author: mauro
- */
-
 #include "../headers/HashModel.h"
 #include "../headers/StringUtils.h"
 
@@ -20,11 +13,12 @@ HashModel::~HashModel() {
 
 void HashModel::initModel() {
 
-	cout << "Masticando el conocimiento..." << endl;
+	cout << "Comenzando a poner el archivo " << NGRAMS_CLEANED << endl;
 
-	ifstream ngram_file("ngram_test_aa");
+	ifstream ngram_file("ngrams_cleaned_up65");
 
 	if (ngram_file.is_open()) {
+		cout << "Masticando el conocimiento..." << endl;
 		string lineOfText;
 		while (getline(ngram_file, lineOfText)) {
 			StringUtils::replace(lineOfText, "\t", " ");
@@ -43,14 +37,12 @@ void HashModel::initModel() {
 				trigrams[bigram_hashed][vector.at(2)] = vector.at(3);
 			}
 		}
-
+		cout << "Conocimiento incorporado!!!" << endl;
 	}
 
 	else {
 		cout << "Problemas al abrir los archivos" << endl;
 	}
-
-	cout << "Conocimiento incorporado!!!" << endl;
 }
 
 map<string, string> HashModel::getUnigrams() {

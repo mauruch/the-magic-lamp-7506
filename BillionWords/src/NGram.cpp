@@ -40,14 +40,19 @@
 return;
 }*/
 
-unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine, HashModel& model){
+NGram::NGram(map<string, string> unigrams, map< long, std::map<string, string> > bigrams,
+		map< long, std::map<string, string> > trigrams){
+	this->probabilityUtils = new ProbabilityUtils(unigrams, bigrams, trigrams, this);
+}
+
+unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
 	string searchNgram;
 	unsigned int whereToAdd = 1;
 	float minorProbability = ((float)90);
 	int numberOfWords = vectorOfTheLine.size();
 
 	for (unsigned int counter = 1; counter < (numberOfWords -1); counter++) {
-		float wordProbability = ProbabilityUtils::getWordProbability(vectorOfTheLine, counter, model);
+		float wordProbability = this->probabilityUtils->getWordProbability(vectorOfTheLine, counter);
 		//obtengo el peso
 		if (wordProbability < minorProbability) {
 			minorProbability = wordProbability;

@@ -7,35 +7,40 @@
 #include <iostream>
 #include <fstream>
 #include "HashModel.h"
+
 using namespace std;
+class ProbabilityUtils;
 
 class NGram {
+private:
 
+	ProbabilityUtils *probabilityUtils;
 
 
 public:
-
-
+	//Inicializador
+	NGram(map<string, string> unigrams, map< long, std::map<string, string> > bigrams,
+			map< long, std::map<string, string> > trigrams);
 	/**
 	 * will return the modified lineOfText with the missing word, ready to be put in the file
 	 */
-	static void fillTheMissingWord(string *lineOfText, HashModel& model);
+	void fillTheMissingWord(string *lineOfText);
 	/*
 	 * va a decir cual es la palabra que falta dado un contexto
 	 */
-	static string findMissingWord(vector<string> vectorOfTheLine, int wordPosition);
+	string findMissingWord(vector<string> vectorOfTheLine, int wordPosition);
 
 	/*
 	 * Nos dice en que posicion falta la palabra, ejemplo, si tengo I running, y la frase deberia ser
 	 * I am running, devuelve 1, que es la posicion donde deberia haber una palabra
 	 */
-	static unsigned int whereIsMissingTheWord(vector<string> vectorOfTheLine, HashModel& model);
+	unsigned int whereIsMissingTheWord(vector<string> vectorOfTheLine);
 	/*
 	 * Sabiendo donde uno tiene que insertar, puede saber cual es el ngrama y cual le sigue
 	 */
-	static string whichWordToAdd(vector<string> vectorOfTheLine,unsigned int whereToAdd);
+	string whichWordToAdd(vector<string> vectorOfTheLine,unsigned int whereToAdd);
 
-	static string getNgramExp(vector<string> line, int wordPosition, int gramLevel);
+	string getNgramExp(vector<string> line, int wordPosition, int gramLevel);
 };
 
 #endif /* HEADERS_NGRAM_H_ */

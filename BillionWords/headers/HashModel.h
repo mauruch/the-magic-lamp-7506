@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "../headers/CONSTANTES.h"
 
 
 using namespace std;

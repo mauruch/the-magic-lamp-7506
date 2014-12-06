@@ -7,23 +7,31 @@
 #include "ProbabilityUtils.h"
 #include "StringUtils.h"
 #include "CONSTANTES.h"
-#include "NGram.h""
+#include "../headers/NGram.h"
+
 using namespace std;
+class NGram;
 
 
 class ProbabilityUtils {
+private:
+	map<string, string> unigrams;
+	map< long, std::map<string, string> > bigrams;
+	map< long, std::map<string, string> > trigrams;
+	NGram *nGram;
 
 public:
 
-	ProbabilityUtils();
+	ProbabilityUtils(map<string, string> unigrams, map< long, std::map<string, string> > bigrams,
+			map< long, std::map<string, string> > trigrams, NGram *nGram);
 
-	static float getWordProbability(vector<string> line, int wordPosition, HashModel& model);
+	float getWordProbability(vector<string> line, int wordPosition);
 
-	static float getTrigramProbability(vector<string> trigram, HashModel& model);
+	float getTrigramProbability(vector<string> trigram);
 
-	static float getBigramProbability(vector<string> bigram, HashModel& model);
+	float getBigramProbability(vector<string> bigram);
 
-	static float getUnigramProbability(string unigram, HashModel& model);
+	float getUnigramProbability(string unigram);
 
 };
 

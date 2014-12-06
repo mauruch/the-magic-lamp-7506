@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
 	//Phase 1: Init Model
 	HashModel ourModel;
 	ourModel.initModel();
+	NGram *nGram = new NGram(ourModel.getUnigrams(), ourModel.getBigrams(), ourModel.getTrigrams());
 
 //	Phase 2: Predict word
 	ifstream fileTest_v2("test_v2.txt");
@@ -32,7 +33,7 @@ int main(int argc, char *argv[]) {
 				cout << "error con la oracion: " << lineOfText << endl;
 			}
 			vector<string> vectorLine = StringUtils::split(lineOfText, ' ');
-			unsigned int wordMissingPos = NGram::whereIsMissingTheWord(vectorLine, ourModel);
+			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(vectorLine);
 
 			cout << "Linea procesada: "<< lineCounter << endl;
 			cout << "Posicion: " << wordMissingPos << endl;
@@ -41,12 +42,11 @@ int main(int argc, char *argv[]) {
 
 	} else {
 		cout << "Problemas al abrir los archivos" << endl;
-		cout << "Probar viendo si las direcciones pasadas son correctas"
-				<< endl;
+		cout << "Probar viendo si las direcciones pasadas son correctas"<< endl;
 
 		return ERROR_AL_ABRIR_ARCHIVO;
 	}
-
+	cout << "Fin del procesamiento del archivo" << endl;
 	return 0;
 }
 
