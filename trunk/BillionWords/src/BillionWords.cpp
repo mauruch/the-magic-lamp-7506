@@ -1,7 +1,6 @@
 #include "../headers/CONSTANTES.h"
 #include "../headers/StringUtils.h"
 #include "../headers/NGram.h"
-#include "../headers/HashModel.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -13,9 +12,8 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
 	//Phase 1: Init Model
-	HashModel ourModel;
-	ourModel.initModel();
-	NGram *nGram = new NGram(ourModel.getUnigrams(), ourModel.getBigrams(), ourModel.getTrigrams());
+
+	NGram *nGram = new NGram();
 
 //	Phase 2: Predict word
 	ifstream fileTest_v2("test_v2.txt");

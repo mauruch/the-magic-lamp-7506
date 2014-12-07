@@ -40,9 +40,8 @@
 return;
 }*/
 
-NGram::NGram(map<string, string> unigrams, map< long, std::map<string, string> > bigrams,
-		map< long, std::map<string, string> > trigrams){
-	this->probabilityUtils = new ProbabilityUtils(unigrams, bigrams, trigrams, this);
+NGram::NGram(){
+	this->probabilityUtils = new ProbabilityUtils(this);
 }
 
 unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){

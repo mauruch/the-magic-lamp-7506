@@ -3,11 +3,15 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include "HashModel.h"
 #include "ProbabilityUtils.h"
 #include "StringUtils.h"
 #include "CONSTANTES.h"
+
 #include "../headers/NGram.h"
+#include <vector>
+#include <map>
+#include "../headers/CONSTANTES.h"
+
 
 using namespace std;
 class NGram;
@@ -22,8 +26,7 @@ private:
 
 public:
 
-	ProbabilityUtils(map<string, string> unigrams, map< long, std::map<string, string> > bigrams,
-			map< long, std::map<string, string> > trigrams, NGram *nGram);
+	ProbabilityUtils(NGram *nGram);
 
 	float getWordProbability(vector<string> line, int wordPosition);
 

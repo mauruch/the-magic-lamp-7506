@@ -6,7 +6,6 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include "HashModel.h"
 
 using namespace std;
 class ProbabilityUtils;
@@ -19,8 +18,7 @@ private:
 
 public:
 	//Inicializador
-	NGram(map<string, string> unigrams, map< long, std::map<string, string> > bigrams,
-			map< long, std::map<string, string> > trigrams);
+	NGram();
 	/**
 	 * will return the modified lineOfText with the missing word, ready to be put in the file
 	 */
