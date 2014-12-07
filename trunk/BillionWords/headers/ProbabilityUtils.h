@@ -1,6 +1,5 @@
 #ifndef PROBABILITYUTILS_H_
 #define PROBABILITYUTILS_H_
-#include <vector>
 #include <iostream>
 #include <string>
 #include "StringUtils.h"

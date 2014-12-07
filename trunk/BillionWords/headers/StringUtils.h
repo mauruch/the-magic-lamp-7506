@@ -2,7 +2,6 @@
 #define STRINGUTILS_H_
 
 #include <string>
-#include <vector>
 #include <sstream>
 #include <iostream>
 #include <fstream>
