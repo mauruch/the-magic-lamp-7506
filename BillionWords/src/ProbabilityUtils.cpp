@@ -184,8 +184,8 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> lin
 
 
 	if(wordPosition >= 2){
-		uni_hashed = StringUtils::hashCode(line[wordPosition-2]);
-		bi_hashed = StringUtils::hashCode(StringUtils::ltos(uni_hashed) + line[wordPosition-1]);
+		uni_hashed = StringUtils::hashCode(line[wordPosition-1]);
+		bi_hashed = StringUtils::hashCode(StringUtils::ltos(uni_hashed) + line[wordPosition]);
 
 		map<string, string> bi_map = this->trigrams[bi_hashed];
 		typedef map<string, string>::iterator it_type;
@@ -197,6 +197,7 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> lin
 				mostProbableString = iterator->first.c_str();
 			}
 		}
+
 	}
 	else{
 		uni_hashed = StringUtils::hashCode(line[wordPosition-1]);
@@ -211,8 +212,7 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> lin
 				mostProbableString = iterator->first.c_str();
 			}
 		}
-
 	}
-	cout << mostProbableString << " es el string mas probable" << endl;
+
 	return mostProbableString;
 }
