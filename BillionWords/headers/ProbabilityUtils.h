@@ -32,6 +32,8 @@ public:
 
 	float getUnigramProbability(string unigram);
 
+	string getMostProbableWordInTheGivenContext(vector<string> line, int wordPosition);
+
 };
 
 #endif /* PROBABILITYUTILS_H_ */
