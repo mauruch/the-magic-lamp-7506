@@ -9,7 +9,7 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
 
 	cout << "Masticando el conocimiento..." << endl;
 
-	ifstream ngram_file("ngrams_cleaned_up5");
+	ifstream ngram_file("ngrams_cleaned_up65");
 
 	if (ngram_file.is_open()) {
 		string lineOfText;
@@ -21,7 +21,7 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
 
 		//get first bigram and back to top
 		vector<string> aux_bigram = getFirstBigram(ngram_file, lineOfText);
-		int lineCounter = 1;
+
 		while (getline(ngram_file, lineOfText)) {
 			StringUtils::replace(lineOfText, "\t", " ");
 			vector<string> vector = StringUtils::split(lineOfText, ' ');
@@ -61,8 +61,6 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
 				trigrams[bigram_hashed][vector.at(2)] = vector.at(3);
 				sumWeightGivenBigram += atol(vector.at(3).c_str());
 			}
-			cout << lineCounter << endl;
-			lineCounter++;
 		}
 
 	}
@@ -174,3 +172,47 @@ float ProbabilityUtils::getWordProbability(vector<string> line,
 			trigramProbability);
 }
 
+
+
+string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> line, int wordPosition){
+
+	string mostProbableString = "";
+	long weightOfMostProbableString = 0;
+	long uni_hashed = 0;
+	long bi_hashed = 0;
+
+
+
+	if(wordPosition >= 2){
+		uni_hashed = StringUtils::hashCode(line[wordPosition-2]);
+		bi_hashed = StringUtils::hashCode(StringUtils::ltos(uni_hashed) + line[wordPosition-1]);
+
+		map<string, string> bi_map = this->trigrams[bi_hashed];
+		typedef map<string, string>::iterator it_type;
+
+		for (it_type iterator = bi_map.begin(); iterator != bi_map.end();
+					iterator++) {
+			if(weightOfMostProbableString < atoi(iterator->second.c_str())){
+				weightOfMostProbableString = atoi(iterator->second.c_str());
+				mostProbableString = iterator->first.c_str();
+			}
+		}
+	}
+	else{
+		uni_hashed = StringUtils::hashCode(line[wordPosition-1]);
+
+		map<string, string> uni_map = this->bigrams[uni_hashed];
+		typedef map<string, string>::iterator it_type;
+
+		for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
+					iterator++) {
+			if(weightOfMostProbableString < atoi(iterator->second.c_str())){
+				weightOfMostProbableString = atoi(iterator->second.c_str());
+				mostProbableString = iterator->first.c_str();
+			}
+		}
+
+	}
+	cout << mostProbableString << " es el string mas probable" << endl;
+	return mostProbableString;
+}

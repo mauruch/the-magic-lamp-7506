@@ -5,19 +5,20 @@
 #include <limits>
 #include <cstdlib>
 
-/*string NGram::findMissingWord(vector<string> vectorOfTheLine, int wordPosition) {
-	string ngramExp = "";
-	if (wordPosition < 2){
-        //ARMAR BIGRAMA Y BUSCAR TODOS LOS TRI DADO EL BI
-		//LUEGO HACERLE BACKOFF A CADA UNO DE LOS TRI
-		//(QUEDARME CON LA PROB MAS ALTA DE LA ULTIMA PALABRA DEL TRI)
-		ngramExp = ProbabilityUtils::getNgramExp(vectorOfTheLine, wordPosition - 1, UNIGRAM_EXPRESSION);
-		string result =  NgramDataRetriever::getAllBigramsGivenAUnigram(ngramExp);
-	} else {
-		ngramExp = ProbabilityUtils::getNgramExp(vectorOfTheLine, wordPosition - 1, BIGRAM_EXPRESSION);
-		NgramDataRetriever::getAllTrigramsGivenABigram(ngramExp);
-	}
-}*/
+string NGram::findMissingWord(vector<string> vectorOfTheLine, int wordPosition) {
+	return this->probabilityUtils->getMostProbableWordInTheGivenContext(vectorOfTheLine, wordPosition);
+	//	string ngramExp = "";
+//	if (wordPosition < 2){
+//        //ARMAR BIGRAMA Y BUSCAR TODOS LOS TRI DADO EL BI
+//		//LUEGO HACERLE BACKOFF A CADA UNO DE LOS TRI
+//		//(QUEDARME CON LA PROB MAS ALTA DE LA ULTIMA PALABRA DEL TRI)
+//		ngramExp = ProbabilityUtils::getNgramExp(vectorOfTheLine, wordPosition - 1, UNIGRAM_EXPRESSION);
+//		string result =  NgramDataRetriever::getAllBigramsGivenAUnigram(ngramExp);
+//	} else {
+//		ngramExp = ProbabilityUtils::getNgramExp(vectorOfTheLine, wordPosition - 1, BIGRAM_EXPRESSION);
+//		NgramDataRetriever::getAllTrigramsGivenABigram(ngramExp);
+//	}
+}
 
 /*void NGram::fillTheMissingWord(string *lineOfText){
 	string finalNGram = "";

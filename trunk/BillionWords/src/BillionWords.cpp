@@ -34,6 +34,7 @@ int main(int argc, char *argv[]) {
 			vector<string> vectorLine = StringUtils::split(lineOfText, ' ');
 			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(
 					vectorLine);
+			string wasd = nGram->findMissingWord(vectorLine, wordMissingPos);
 
 			cout << "Linea procesada: " << lineCounter << endl;
 			cout << "Posicion: " << wordMissingPos << endl;
