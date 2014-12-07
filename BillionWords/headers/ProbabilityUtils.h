@@ -3,15 +3,9 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include "ProbabilityUtils.h"
 #include "StringUtils.h"
 #include "CONSTANTES.h"
-
 #include "../headers/NGram.h"
-#include <vector>
-#include <map>
-#include "../headers/CONSTANTES.h"
-
 
 using namespace std;
 class NGram;
@@ -22,6 +16,8 @@ private:
 	map<string, string> unigrams;
 	map< long, std::map<string, string> > bigrams;
 	map< long, std::map<string, string> > trigrams;
+	map< long, long> totalWeightGivenUni;
+	map< long, long> totalWeightGivenBigram;
 	NGram *nGram;
 
 public:

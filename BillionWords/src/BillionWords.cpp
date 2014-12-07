@@ -26,21 +26,24 @@ int main(int argc, char *argv[]) {
 		while (getline(fileTest_v2, lineOfText)) {
 			try {
 				lineOfText.erase(0, lineOfText.find_first_of("\"") + 1);
-				lineOfText.erase(lineOfText.find_last_of("\"") - 1, lineOfText.size() - 1);
-			} catch(...){
+				lineOfText.erase(lineOfText.find_last_of("\"") - 1,
+						lineOfText.size() - 1);
+			} catch (...) {
 				cout << "error con la oracion: " << lineOfText << endl;
 			}
 			vector<string> vectorLine = StringUtils::split(lineOfText, ' ');
-			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(vectorLine);
+			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(
+					vectorLine);
 
-			cout << "Linea procesada: "<< lineCounter << endl;
+			cout << "Linea procesada: " << lineCounter << endl;
 			cout << "Posicion: " << wordMissingPos << endl;
 			lineCounter++;
 		}
 
 	} else {
 		cout << "Problemas al abrir los archivos" << endl;
-		cout << "Probar viendo si las direcciones pasadas son correctas"<< endl;
+		cout << "Probar viendo si las direcciones pasadas son correctas"
+				<< endl;
 
 		return ERROR_AL_ABRIR_ARCHIVO;
 	}
