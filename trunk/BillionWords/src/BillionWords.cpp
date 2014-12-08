@@ -46,10 +46,9 @@ int main(int argc, char *argv[]) {
 				cout << "error con la oracion: " << lineOfText << endl;
 			}
 			vector<string> vectorLine = StringUtils::split(lineOfText, ' ');
-			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(
-					vectorLine);
-			string missingWord = nGram->findMissingWord(vectorLine,
-					wordMissingPos);
+			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(vectorLine);
+			cout << wordMissingPos << endl;
+			string missingWord = nGram->findMissingWord(vectorLine, wordMissingPos);
 
 			if (missingWord != "" && missingWord != "\"") {
 				if (wordMissingPos < vectorLine.size()) {

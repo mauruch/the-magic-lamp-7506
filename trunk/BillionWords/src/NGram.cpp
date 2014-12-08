@@ -38,11 +38,12 @@ NGram::NGram(){
 unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
 	string searchNgram;
 	unsigned int whereToAdd = 1;
-	float minorProbability = ((float)90);
+	double minorProbability = ((double)1);
 	int numberOfWords = vectorOfTheLine.size();
 
 	for (unsigned int counter = 1; counter < (numberOfWords); counter++) {
-		float wordProbability = this->probabilityUtils->getWordProbability(vectorOfTheLine, counter);
+		double wordProbability = this->probabilityUtils->getWordProbability(vectorOfTheLine, counter);
+		cout << "WORD PROBA: " << wordProbability << endl;
 		//obtengo el peso
 		if (wordProbability < minorProbability) {
 			minorProbability = wordProbability;
