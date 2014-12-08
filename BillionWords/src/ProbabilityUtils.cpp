@@ -98,7 +98,7 @@ vector<string> getFirstBigram(ifstream& ngram_file, string& lineOfText) {
 	return aux_bigram;
 }
 
-float ProbabilityUtils::getUnigramProbability(string unigram) {
+double ProbabilityUtils::getUnigramProbability(string unigram) {
 	string weightAsString = this->unigrams[unigram];
 	int weight = atoi(weightAsString.c_str());
 
@@ -107,19 +107,29 @@ float ProbabilityUtils::getUnigramProbability(string unigram) {
 
 }
 
-float ProbabilityUtils::getBigramProbability(vector<string> bigram) {
+double ProbabilityUtils::getBigramProbability(vector<string> vectorBigram, int gramLevel) {
+	int bigramPos1 = 0;
+	int bigramPos2 = 1;
+	if (gramLevel > 2) {
+		bigramPos1 = 1;
+		bigramPos2 = 2;
+	}
 
-	long uni_hashed = StringUtils::hashCode(bigram[0]);
+	long uni_hashed = StringUtils::hashCode(vectorBigram[bigramPos1]);
+
+	int sizeVector = vectorBigram.size();
 
 	float sumOfAllBigrams = this->totalWeightGivenUni[uni_hashed];
 
-	float weightBigram = atoi(this->bigrams[uni_hashed][bigram[1]].c_str());
+	string bigram = vectorBigram[bigramPos2];
+
+	float weightBigram = atoi(this->bigrams[uni_hashed][bigram].c_str());
 
 	return (weightBigram / sumOfAllBigrams);
 
 }
 
-float ProbabilityUtils::getTrigramProbability(vector<string> trigram) {
+double ProbabilityUtils::getTrigramProbability(vector<string> trigram) {
 
 	long uni_hashed = StringUtils::hashCode(trigram[0]);
 	long bi_hashed = StringUtils::hashCode(
@@ -133,27 +143,33 @@ float ProbabilityUtils::getTrigramProbability(vector<string> trigram) {
 
 }
 
-float interpolate(double unigramProbability, double bigramProbability,
+double interpolate(double unigramProbability, double bigramProbability,
 		double trigramProbability) {
-	float unigramWeigth = 0.33;
-	float bigramWeigth = 0.33;
-	float trigramWeigth = 0.33;
+	double unigramWeigth = 0.33;
+	double bigramWeigth = 0.33;
+	double trigramWeigth = 0.33;
+	cout << "uni: " << unigramProbability << endl;
+	cout << "bi: " << bigramProbability << endl;
+	cout << "tri: " << trigramProbability << endl;
+
 	return unigramWeigth * unigramProbability + bigramWeigth * bigramProbability
 			+ trigramWeigth * unigramProbability;
 }
 
-float ProbabilityUtils::getWordProbability(vector<string> line,
+double ProbabilityUtils::getWordProbability(vector<string> line,
 		int wordPosition) {
 
-	float trigramProbability = (float) 0;
-	float bigramProbability = (float) 0;
-	float unigramProbability = (float) 0;
+	double trigramProbability = (double) 0;
+	double bigramProbability = (double) 0;
+	double unigramProbability = (double) 0;
+	int gramLevel = BIGRAM_EXPRESSION;
 
 	string ngramExpression;
 
 	if (wordPosition > 1) {
 		ngramExpression = this->nGram->getNgramExp(line, wordPosition,
 		TRIGRAM_EXPRESSION);
+		gramLevel = TRIGRAM_EXPRESSION;
 	} else {
 		ngramExpression = this->nGram->getNgramExp(line, wordPosition,
 		BIGRAM_EXPRESSION);
@@ -164,9 +180,9 @@ float ProbabilityUtils::getWordProbability(vector<string> line,
 	if (wordPosition > 1)
 		trigramProbability = getTrigramProbability(ngram_splitted);
 
-	unigramProbability = getUnigramProbability(ngram_splitted[0]);
+	unigramProbability = getUnigramProbability(ngram_splitted[ngram_splitted.size()-1]);
 
-	bigramProbability = getBigramProbability(ngram_splitted);
+	bigramProbability = getBigramProbability(ngram_splitted, gramLevel);
 
 	return interpolate(unigramProbability, bigramProbability,
 			trigramProbability);

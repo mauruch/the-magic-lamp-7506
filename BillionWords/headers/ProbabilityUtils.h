@@ -23,13 +23,13 @@ public:
 
 	ProbabilityUtils(NGram *nGram);
 
-	float getWordProbability(vector<string> line, int wordPosition);
+	double getWordProbability(vector<string> line, int wordPosition);
 
-	float getTrigramProbability(vector<string> trigram);
+	double getTrigramProbability(vector<string> trigram);
 
-	float getBigramProbability(vector<string> bigram);
+	double getBigramProbability(vector<string> bigram, int gramLevel);
 
-	float getUnigramProbability(string unigram);
+	double getUnigramProbability(string unigram);
 
 	string getMostProbableWordInTheGivenContext(vector<string> line, int wordPosition);
 
