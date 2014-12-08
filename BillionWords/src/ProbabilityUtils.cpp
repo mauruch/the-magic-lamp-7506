@@ -172,55 +172,49 @@ float ProbabilityUtils::getWordProbability(vector<string> line,
 			trigramProbability);
 }
 
-
-
-string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> line, int wordPosition){
+string ProbabilityUtils::getMostProbableWordInTheGivenContext(
+		vector<string> line, int wordPosition) {
 
 	string mostProbableString = "ERROR NO DEBERIA LANZAR ESTO";
 	long weightOfMostProbableString = 0;
 	long uni_hashed = 0;
 	long bi_hashed = 0;
 
+	if (wordPosition >= 2) {
 
-
-	if(wordPosition >= 2){
-//		cout << "posicion " << wordPosition << endl;
-		uni_hashed = StringUtils::hashCode(line[wordPosition-1]);
-//		cout << "line[wordPosition-1] " << line[wordPosition-1] << endl;
-		bi_hashed = StringUtils::hashCode(StringUtils::ltos(uni_hashed) + line[wordPosition]);
-//		cout << "line[wordPosition]" << line[wordPosition] << endl;
+		uni_hashed = StringUtils::hashCode(line[wordPosition - 2]);
+		bi_hashed = StringUtils::hashCode(
+				StringUtils::ltos(uni_hashed) + line[wordPosition - 1]);
 
 		map<string, string> bi_map = this->trigrams[bi_hashed];
 		typedef map<string, string>::iterator it_type;
 
 		for (it_type iterator = bi_map.begin(); iterator != bi_map.end();
-					iterator++) {
-//			cout << "iterator->first.c_str() " << iterator->first.c_str() << endl;
-//			cout << "iterator->second.c_str() " << iterator->second.c_str() << endl;
+				iterator++) {
 
-
-			if(weightOfMostProbableString < atoi(iterator->second.c_str())){
+			if (weightOfMostProbableString < atoi(iterator->second.c_str())) {
 				weightOfMostProbableString = atoi(iterator->second.c_str());
 				mostProbableString = iterator->first.c_str();
 			}
 		}
-		cout << "mostProbableString: " << mostProbableString << " con peso " << weightOfMostProbableString <<endl;
+		cout << "mostProbableString: " << mostProbableString << " con peso "
+				<< weightOfMostProbableString << endl;
 
-	}
-	else{
-		uni_hashed = StringUtils::hashCode(line[wordPosition-1]);
+	} else {
+		uni_hashed = StringUtils::hashCode(line[wordPosition - 1]);
 
 		map<string, string> uni_map = this->bigrams[uni_hashed];
 		typedef map<string, string>::iterator it_type;
 
 		for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
-					iterator++) {
-			if(weightOfMostProbableString < atoi(iterator->second.c_str())){
+				iterator++) {
+			if (weightOfMostProbableString < atoi(iterator->second.c_str())) {
 				weightOfMostProbableString = atoi(iterator->second.c_str());
 				mostProbableString = iterator->first.c_str();
 			}
 		}
-		cout << "mostProbableString: " << mostProbableString << " con peso " << weightOfMostProbableString <<endl;
+		cout << "mostProbableString: " << mostProbableString << " con peso "
+				<< weightOfMostProbableString << endl;
 
 	}
 
