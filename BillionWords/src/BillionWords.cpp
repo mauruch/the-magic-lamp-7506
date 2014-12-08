@@ -50,9 +50,12 @@ int main(int argc, char *argv[]) {
 			cout << wordMissingPos << endl;
 			string missingWord = nGram->findMissingWord(vectorLine, wordMissingPos);
 
+			//le agrego la primer comilla al output
+			outputFile << "\"";
+
 			if (missingWord != "" && missingWord != "\"") {
 				if (wordMissingPos < vectorLine.size()) {
-					vectorLine.insert(vectorLine.begin() + wordMissingPos + 1,
+					vectorLine.insert(vectorLine.begin() + wordMissingPos,
 							missingWord);
 				} else
 					vectorLine.insert(vectorLine.end(), missingWord);
@@ -67,7 +70,7 @@ int main(int argc, char *argv[]) {
 				}
 			} else
 				outputFile << lineOfText;
-//			outputFile << "\""; //la parte final de las comillas
+			outputFile << "\""; //la parte final de las comillas
 			outputFile << std::endl;
 		}
 

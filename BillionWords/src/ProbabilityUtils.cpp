@@ -107,7 +107,8 @@ double ProbabilityUtils::getUnigramProbability(string unigram) {
 
 }
 
-double ProbabilityUtils::getBigramProbability(vector<string> vectorBigram, int gramLevel) {
+double ProbabilityUtils::getBigramProbability(vector<string> vectorBigram,
+		int gramLevel) {
 	int bigramPos1 = 0;
 	int bigramPos2 = 1;
 	if (gramLevel > 2) {
@@ -148,9 +149,6 @@ double interpolate(double unigramProbability, double bigramProbability,
 	double unigramWeigth = 0.33;
 	double bigramWeigth = 0.33;
 	double trigramWeigth = 0.33;
-	cout << "uni: " << unigramProbability << endl;
-	cout << "bi: " << bigramProbability << endl;
-	cout << "tri: " << trigramProbability << endl;
 
 	return unigramWeigth * unigramProbability + bigramWeigth * bigramProbability
 			+ trigramWeigth * unigramProbability;
@@ -180,7 +178,29 @@ double ProbabilityUtils::getWordProbability(vector<string> line,
 	if (wordPosition > 1)
 		trigramProbability = getTrigramProbability(ngram_splitted);
 
-	unigramProbability = getUnigramProbability(ngram_splitted[ngram_splitted.size()-1]);
+	unigramProbability = getUnigramProbability(
+			ngram_splitted[ngram_splitted.size() - 1]);
+
+	bigramProbability = getBigramProbability(ngram_splitted, gramLevel);
+
+	return interpolate(unigramProbability, bigramProbability,
+			trigramProbability);
+}
+
+double ProbabilityUtils::getWordProbability(string ngramExpression,
+		int gramLevel) {
+
+	double trigramProbability = (double) 0;
+	double bigramProbability = (double) 0;
+	double unigramProbability = (double) 0;
+
+	vector<string> ngram_splitted = StringUtils::split(ngramExpression, ' ');
+
+	if (gramLevel == TRIGRAM_EXPRESSION)
+		trigramProbability = getTrigramProbability(ngram_splitted);
+
+	unigramProbability = getUnigramProbability(
+			ngram_splitted[ngram_splitted.size() - 1]);
 
 	bigramProbability = getBigramProbability(ngram_splitted, gramLevel);
 
@@ -191,48 +211,76 @@ double ProbabilityUtils::getWordProbability(vector<string> line,
 string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 		vector<string> line, int wordPosition) {
 
-	string mostProbableString = "ERROR NO DEBERIA LANZAR ESTO";
-	long weightOfMostProbableString = 0;
 	long uni_hashed = 0;
 	long bi_hashed = 0;
 
+	double wordProba = (double) 0;
+	string mostProbableWord;
 	if (wordPosition >= 2) {
-
-		uni_hashed = StringUtils::hashCode(line[wordPosition - 2]);
-		bi_hashed = StringUtils::hashCode(
-				StringUtils::ltos(uni_hashed) + line[wordPosition - 1]);
+		string uni = line[wordPosition - 2];
+		string bi = line[wordPosition - 1];
+		uni_hashed = StringUtils::hashCode(uni);
+		bi_hashed = StringUtils::hashCode(StringUtils::ltos(uni_hashed) + bi);
 
 		map<string, string> bi_map = this->trigrams[bi_hashed];
 		typedef map<string, string>::iterator it_type;
 
 		for (it_type iterator = bi_map.begin(); iterator != bi_map.end();
 				iterator++) {
+			string currentWord = iterator->first;
+			string ngramExpression = uni + " " + bi + " " + currentWord;
+			double currentProba = getWordProbability(ngramExpression,
+					TRIGRAM_EXPRESSION);
+			if (currentProba > wordProba) {
+				wordProba = currentProba;
+				mostProbableWord = currentWord;
+			}
 
-			if (weightOfMostProbableString < atoi(iterator->second.c_str())) {
-				weightOfMostProbableString = atoi(iterator->second.c_str());
-				mostProbableString = iterator->first.c_str();
+		}
+
+		uni_hashed = StringUtils::hashCode(bi);
+		map<string, string> uni_map = this->bigrams[uni_hashed];
+		typedef map<string, string>::iterator it_type;
+
+		for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
+				iterator++) {
+			string currentWord = iterator->first;
+			string ngramExpression = uni + " " + currentWord;
+			double currentProba = getWordProbability(ngramExpression,
+					BIGRAM_EXPRESSION);
+			if (currentProba > wordProba) {
+				wordProba = currentProba;
+				mostProbableWord = currentWord;
 			}
 		}
-		cout << "mostProbableString: " << mostProbableString << " con peso "
-				<< weightOfMostProbableString << endl;
+
+		cout << "mostProbable: " << mostProbableWord << " con peso: "
+				<< wordProba << endl;
+
 
 	} else {
-		uni_hashed = StringUtils::hashCode(line[wordPosition - 1]);
+
+		string uni = line[wordPosition - 1];
+		uni_hashed = StringUtils::hashCode(uni);
 
 		map<string, string> uni_map = this->bigrams[uni_hashed];
 		typedef map<string, string>::iterator it_type;
 
 		for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
 				iterator++) {
-			if (weightOfMostProbableString < atoi(iterator->second.c_str())) {
-				weightOfMostProbableString = atoi(iterator->second.c_str());
-				mostProbableString = iterator->first.c_str();
+			string currentWord = iterator->first;
+			string ngramExpression = uni + " " + currentWord;
+			double currentProba = getWordProbability(ngramExpression,
+					BIGRAM_EXPRESSION);
+			if (currentProba > wordProba) {
+				wordProba = currentProba;
+				mostProbableWord = currentWord;
 			}
 		}
-		cout << "mostProbableString: " << mostProbableString << " con peso "
-				<< weightOfMostProbableString << endl;
+		cout << "mostProbableString: " << mostProbableWord << " con peso: "
+				<< wordProba << endl;
 
 	}
 
-	return mostProbableString;
+	return mostProbableWord;
 }
