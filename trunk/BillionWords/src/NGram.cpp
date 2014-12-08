@@ -43,7 +43,6 @@ unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
 
 	for (unsigned int counter = 1; counter < (numberOfWords); counter++) {
 		double wordProbability = this->probabilityUtils->getWordProbability(vectorOfTheLine, counter);
-		cout << "WORD PROBA: " << wordProbability << endl;
 		//obtengo el peso
 		if (wordProbability < minorProbability) {
 			minorProbability = wordProbability;

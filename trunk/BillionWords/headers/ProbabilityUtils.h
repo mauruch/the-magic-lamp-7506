@@ -33,6 +33,8 @@ public:
 
 	string getMostProbableWordInTheGivenContext(vector<string> line, int wordPosition);
 
+	double getWordProbability(string ngram, int gramLevel);
+
 };
 
 #endif /* PROBABILITYUTILS_H_ */
