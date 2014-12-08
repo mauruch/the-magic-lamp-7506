@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	NGram *nGram = new NGram();
 
 //	Phase 2: Predict word
-	ifstream fileTest_v2("test_v2.txt");
+	ifstream fileTest_v2("testaa");
 
 	std::ofstream outputFile; //abro un archivo de salida
 	outputFile.open("resultadoFinal.txt", std::ios_base::app); //le indico el nombre del archivo de salida
@@ -35,12 +35,12 @@ int main(int argc, char *argv[]) {
 				int startOfSentence = 0;
 				int longOfSentence = lineOfText.length();
 				startOfSentence = lineOfText.find("\"");
-				for (int counter=0 ; counter<startOfSentence ; counter++ ){
+				for (int counter = 0; counter < startOfSentence; counter++) {
 					outputFile << lineOfText[counter];
 				}
 //				outputFile << "\""; //la parte inicial de las comillas
-                lineOfText.erase(0, lineOfText.find_first_of("\""));
-//                lineOfText.erase(lineOfText.find_last_of("\"") - 1, lineOfText.size() - 1);
+				lineOfText.erase(0, lineOfText.find_first_of("\"") + 1);
+				lineOfText.erase(lineOfText.find_last_of("\""), lineOfText.size() - 1);
 
 			} catch (...) {
 				cout << "error con la oracion: " << lineOfText << endl;
@@ -48,24 +48,26 @@ int main(int argc, char *argv[]) {
 			vector<string> vectorLine = StringUtils::split(lineOfText, ' ');
 			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(
 					vectorLine);
-			string missingWord = nGram->findMissingWord(vectorLine, wordMissingPos);
+			string missingWord = nGram->findMissingWord(vectorLine,
+					wordMissingPos);
 
-			if(missingWord != "" && missingWord != "\""){
-				if(wordMissingPos < vectorLine.size()){
-				vectorLine.insert(vectorLine.begin()+wordMissingPos+1, missingWord);
-				}
-				else
+			if (missingWord != "" && missingWord != "\"") {
+				if (wordMissingPos < vectorLine.size()) {
+					vectorLine.insert(vectorLine.begin() + wordMissingPos + 1,
+							missingWord);
+				} else
 					vectorLine.insert(vectorLine.end(), missingWord);
 
-
-	//			nGram->fillTheMissingWord(&lineOfText); //aca le agrego la palabra que le falta
-				for(int iterator = 0; iterator < vectorLine.size(); iterator++){
+				//			nGram->fillTheMissingWord(&lineOfText); //aca le agrego la palabra que le falta
+				for (int iterator = 0; iterator < vectorLine.size();
+						iterator++) {
 					outputFile << vectorLine[iterator];
-					if (iterator != (vectorLine.size()-1) ){
+					if (iterator != (vectorLine.size() - 1)) {
 						outputFile << " ";
 					}
 				}
-			}else outputFile << lineOfText;
+			} else
+				outputFile << lineOfText;
 //			outputFile << "\""; //la parte final de las comillas
 			outputFile << std::endl;
 		}
