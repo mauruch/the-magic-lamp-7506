@@ -9,7 +9,7 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
 
 	cout << "Masticando el conocimiento..." << endl;
 
-	ifstream ngram_file("ngrams_cleaned_up65");
+	ifstream ngram_file("ngrams_cleaned_up5");
 
 	if (ngram_file.is_open()) {
 		string lineOfText;
@@ -176,7 +176,7 @@ float ProbabilityUtils::getWordProbability(vector<string> line,
 
 string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> line, int wordPosition){
 
-	string mostProbableString = "";
+	string mostProbableString = "ERROR NO DEBERIA LANZAR ESTO";
 	long weightOfMostProbableString = 0;
 	long uni_hashed = 0;
 	long bi_hashed = 0;
@@ -184,19 +184,27 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> lin
 
 
 	if(wordPosition >= 2){
+//		cout << "posicion " << wordPosition << endl;
 		uni_hashed = StringUtils::hashCode(line[wordPosition-1]);
+//		cout << "line[wordPosition-1] " << line[wordPosition-1] << endl;
 		bi_hashed = StringUtils::hashCode(StringUtils::ltos(uni_hashed) + line[wordPosition]);
+//		cout << "line[wordPosition]" << line[wordPosition] << endl;
 
 		map<string, string> bi_map = this->trigrams[bi_hashed];
 		typedef map<string, string>::iterator it_type;
 
 		for (it_type iterator = bi_map.begin(); iterator != bi_map.end();
 					iterator++) {
+//			cout << "iterator->first.c_str() " << iterator->first.c_str() << endl;
+//			cout << "iterator->second.c_str() " << iterator->second.c_str() << endl;
+
+
 			if(weightOfMostProbableString < atoi(iterator->second.c_str())){
 				weightOfMostProbableString = atoi(iterator->second.c_str());
 				mostProbableString = iterator->first.c_str();
 			}
 		}
+		cout << "mostProbableString: " << mostProbableString << " con peso " << weightOfMostProbableString <<endl;
 
 	}
 	else{
@@ -212,6 +220,8 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> lin
 				mostProbableString = iterator->first.c_str();
 			}
 		}
+		cout << "mostProbableString: " << mostProbableString << " con peso " << weightOfMostProbableString <<endl;
+
 	}
 
 	return mostProbableString;
