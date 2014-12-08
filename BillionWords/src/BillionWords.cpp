@@ -51,8 +51,12 @@ int main(int argc, char *argv[]) {
 			string missingWord = nGram->findMissingWord(vectorLine, wordMissingPos);
 
 			if(missingWord != "" && missingWord != "\""){
-				vectorLine.at(wordMissingPos).append(" ");
-				vectorLine.at(wordMissingPos).append(missingWord);
+				if(wordMissingPos < vectorLine.size()){
+				vectorLine.insert(vectorLine.begin()+wordMissingPos+1, missingWord);
+				}
+				else
+					vectorLine.insert(vectorLine.end(), missingWord);
+
 
 	//			nGram->fillTheMissingWord(&lineOfText); //aca le agrego la palabra que le falta
 				for(int iterator = 0; iterator < vectorLine.size(); iterator++){
