@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
 	//Phase 1: Init Model
 
 	NGram *nGram = new NGram();
+	StringUtils *stringUtils = new StringUtils();
 
 //	Phase 2: Predict word
 	ifstream fileTest_v2("test_v2.txt");
@@ -45,7 +46,7 @@ int main(int argc, char *argv[]) {
 			} catch (...) {
 				cout << "error con la oracion: " << lineOfText << endl;
 			}
-			vector<string> vectorLine = StringUtils::split(lineOfText, ' ');
+			vector<string> vectorLine = stringUtils->split(lineOfText, ' ');
 			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(vectorLine);
 			cout << wordMissingPos << endl;
 			string missingWord = nGram->findMissingWord(vectorLine, wordMissingPos);

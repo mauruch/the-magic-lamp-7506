@@ -14,13 +14,15 @@ int main1(int argc, char *argv[]) {
 	ifstream ngramas("ngrams_cleaned_up5");
 	string lineaDelNgrama = "";
 	vector<string> vectorOfTheLine;
+	StringUtils *stringUtils = new StringUtils();
+
 	unsigned int totalCounter = 0;
 	if (ngramas.is_open()) {
 		string lineOfText;
 		while (getline(ngramas, lineaDelNgrama)) {
-			vectorOfTheLine = StringUtils::split(lineaDelNgrama, ' ');
+			vectorOfTheLine = stringUtils->split(lineaDelNgrama, ' ');
 			if(vectorOfTheLine.size() == 1){
-				vectorOfTheLine = StringUtils::split(lineaDelNgrama, '\t');
+				vectorOfTheLine = stringUtils->split(lineaDelNgrama, '\t');
 				string numero = vectorOfTheLine.back();
 				totalCounter += atoi(numero.c_str());
 			}

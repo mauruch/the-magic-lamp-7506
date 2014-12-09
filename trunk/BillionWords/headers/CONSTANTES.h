@@ -11,6 +11,9 @@
 #define WHITE_SPACE ' '
 #define WHITE_SPACE_STRING " "
 #define NGRAMS_CLEANED "ngrams_cleaned_up5"
+#define UNIGRAM_WEIGHT 0.01
+#define BIGRAM_WEIGHT 0.5
+#define TRIGRAM_WEIGHT 0.55
 
 
 #endif /* TRUNK_BILLIONWORDS_HEADERS_CONSTANTES_H_ */
