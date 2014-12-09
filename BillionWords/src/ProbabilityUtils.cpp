@@ -194,6 +194,7 @@ double ProbabilityUtils::getWordProbability(string ngramExpression,
 	double bigramProbability = (double) 0;
 	double unigramProbability = (double) 0;
 
+	//TODO vector<string> ngram_splitted = {"a", "b", "c"};
 	vector<string> ngram_splitted = StringUtils::split(ngramExpression, ' ');
 
 	if (gramLevel == TRIGRAM_EXPRESSION)

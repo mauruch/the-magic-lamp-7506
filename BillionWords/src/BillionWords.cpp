@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	NGram *nGram = new NGram();
 
 //	Phase 2: Predict word
-	ifstream fileTest_v2("testaa");
+	ifstream fileTest_v2("test_v2.txt");
 
 	std::ofstream outputFile; //abro un archivo de salida
 	outputFile.open("resultadoFinal.txt", std::ios_base::app); //le indico el nombre del archivo de salida
