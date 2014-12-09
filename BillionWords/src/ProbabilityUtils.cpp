@@ -118,8 +118,6 @@ double ProbabilityUtils::getBigramProbability(vector<string> vectorBigram,
 
 	long uni_hashed = StringUtils::hashCode(vectorBigram[bigramPos1]);
 
-	int sizeVector = vectorBigram.size();
-
 	float sumOfAllBigrams = this->totalWeightGivenUni[uni_hashed];
 
 	string bigram = vectorBigram[bigramPos2];
@@ -229,7 +227,9 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 		for (it_type iterator = bi_map.begin(); iterator != bi_map.end();
 				iterator++) {
 			string currentWord = iterator->first;
-			string ngramExpression = uni + " " + bi + " " + currentWord;
+			string ngramExpression = "";
+			ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(bi).append(WHITE_SPACE_STRING)
+					.append(currentWord);
 			double currentProba = getWordProbability(ngramExpression,
 					TRIGRAM_EXPRESSION);
 			if (currentProba > wordProba) {
@@ -246,9 +246,9 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 		for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
 				iterator++) {
 			string currentWord = iterator->first;
-			string ngramExpression = uni + " " + currentWord;
-			double currentProba = getWordProbability(ngramExpression,
-					BIGRAM_EXPRESSION);
+			string ngramExpression = "";
+			ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(currentWord);
+			double currentProba = getWordProbability(ngramExpression, BIGRAM_EXPRESSION);
 			if (currentProba > wordProba) {
 				wordProba = currentProba;
 				mostProbableWord = currentWord;
@@ -270,7 +270,8 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 		for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
 				iterator++) {
 			string currentWord = iterator->first;
-			string ngramExpression = uni + " " + currentWord;
+			string ngramExpression = "";
+			ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(currentWord);
 			double currentProba = getWordProbability(ngramExpression,
 					BIGRAM_EXPRESSION);
 			if (currentProba > wordProba) {

@@ -8,6 +8,8 @@
 #define BIGRAM_EXPRESSION 2
 #define UNIGRAM_EXPRESSION 1
 #define UNIGRAMTOTALWEIGHT 765575511
+#define WHITE_SPACE ' '
+#define WHITE_SPACE_STRING " "
 #define NGRAMS_CLEANED "ngrams_cleaned_up5"
 
 
