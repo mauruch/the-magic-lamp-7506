@@ -23,7 +23,15 @@ int main(int argc, char *argv[]) {
 	outputFile.open("resultadoFinal.txt", std::ios_base::app); //le indico el nombre del archivo de salida
 
 	if (fileTest_v2.is_open()) {
+		//inicializo EVERYTHING afuera
 		string lineOfText;
+		vector<string> vectorLine;
+		string missingWord;
+		int startOfSentence;
+		int longOfSentence;
+		int counter;
+		unsigned int wordMissingPos;
+		int iterator;
 
 		//Hago esto una sola vez para ponerle el "id", "sentence"
 		getline(fileTest_v2, lineOfText);
@@ -33,23 +41,24 @@ int main(int argc, char *argv[]) {
 		while (getline(fileTest_v2, lineOfText)) {
 			try {
 				//aca se procesaria el metodo
-				int startOfSentence = 0;
-				int longOfSentence = lineOfText.length();
+				startOfSentence = 0;
+				longOfSentence = lineOfText.length();
 				startOfSentence = lineOfText.find("\"");
-				for (int counter = 0; counter < startOfSentence; counter++) {
+				for (counter = 0; counter < startOfSentence; counter++) {
 					outputFile << lineOfText[counter];
 				}
 //				outputFile << "\""; //la parte inicial de las comillas
 				lineOfText.erase(0, lineOfText.find_first_of("\"") + 1);
 				lineOfText.erase(lineOfText.find_last_of("\""), lineOfText.size() - 1);
+//				lineOfText.clear();
 
 			} catch (...) {
 				cout << "error con la oracion: " << lineOfText << endl;
 			}
-			vector<string> vectorLine = stringUtils->split(lineOfText, ' ');
-			unsigned int wordMissingPos = nGram->whereIsMissingTheWord(vectorLine);
+			vectorLine = stringUtils->split(lineOfText, ' ');
+			wordMissingPos = nGram->whereIsMissingTheWord(&vectorLine);
 			cout << wordMissingPos << endl;
-			string missingWord = nGram->findMissingWord(vectorLine, wordMissingPos);
+			missingWord = nGram->findMissingWord(&vectorLine, wordMissingPos);
 
 			//le agrego la primer comilla al output
 			outputFile << "\"";
@@ -62,7 +71,7 @@ int main(int argc, char *argv[]) {
 					vectorLine.insert(vectorLine.end(), missingWord);
 
 				//			nGram->fillTheMissingWord(&lineOfText); //aca le agrego la palabra que le falta
-				for (int iterator = 0; iterator < vectorLine.size();
+				for (iterator = 0; iterator < vectorLine.size();
 						iterator++) {
 					outputFile << vectorLine[iterator];
 					if (iterator != (vectorLine.size() - 1)) {
@@ -71,8 +80,11 @@ int main(int argc, char *argv[]) {
 				}
 			} else
 				outputFile << lineOfText;
+
 			outputFile << "\""; //la parte final de las comillas
 			outputFile << std::endl;
+			vectorLine.clear();
+			lineOfText.clear();
 		}
 
 	} else {

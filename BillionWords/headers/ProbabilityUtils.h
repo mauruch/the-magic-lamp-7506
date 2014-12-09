@@ -24,17 +24,17 @@ public:
 
 	ProbabilityUtils(NGram *nGram, StringUtils *stringUtils);
 
-	double getWordProbability(vector<string> line, int wordPosition);
+	double getWordProbability(vector<string> *line, int wordPosition);
 
-	double getTrigramProbability(vector<string> trigram);
+	double getWordProbability(string ngram, int gramLevel);
 
-	double getBigramProbability(vector<string> bigram, int gramLevel);
+	double getTrigramProbability(vector<string> *trigram);
+
+	double getBigramProbability(vector<string> *bigram, int gramLevel);
 
 	double getUnigramProbability(string unigram);
 
-	string getMostProbableWordInTheGivenContext(vector<string> line, int wordPosition);
-
-	double getWordProbability(string ngram, int gramLevel);
+	string getMostProbableWordInTheGivenContext(vector<string> *line, int wordPosition);
 
 	string getFirstUnigram(ifstream& ngram_file, string& lineOfText);
 	vector<string> getFirstBigram(ifstream& ngram_file, string& lineOfText);

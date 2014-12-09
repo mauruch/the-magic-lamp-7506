@@ -5,7 +5,7 @@
 #include <limits>
 #include <cstdlib>
 
-string NGram::findMissingWord(vector<string> vectorOfTheLine, int wordPosition) {
+string NGram::findMissingWord(vector<string> *vectorOfTheLine, int wordPosition) {
 	return this->probabilityUtils->getMostProbableWordInTheGivenContext(vectorOfTheLine, wordPosition);
 
 }
@@ -36,14 +36,15 @@ NGram::NGram(){
 	this->probabilityUtils = new ProbabilityUtils(this, stringUtils);
 }
 
-unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
-	string searchNgram;
+unsigned int NGram::whereIsMissingTheWord(vector<string> *vectorOfTheLine){
+
 	unsigned int whereToAdd = 1;
 	double minorProbability = ((double)1);
-	int numberOfWords = vectorOfTheLine.size();
+	int numberOfWords = (*vectorOfTheLine).size();
+	double wordProbability;
 
 	for (unsigned int counter = 1; counter < (numberOfWords); counter++) {
-		double wordProbability = this->probabilityUtils->getWordProbability(vectorOfTheLine, counter);
+		wordProbability = this->probabilityUtils->getWordProbability(vectorOfTheLine, counter);
 		//obtengo el peso
 		if (wordProbability < minorProbability) {
 			minorProbability = wordProbability;
@@ -53,21 +54,20 @@ unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){
 	return whereToAdd;
 }
 
-string NGram::getNgramExp(vector<string> line, int wordPosition,
-		int gramLevel) {
+string NGram::getNgramExp(vector<string> *line, int wordPosition, int gramLevel) {
 	string gram = "";
 	switch (gramLevel) {
 	case 1:
-		gram.append(line.at(wordPosition));
+		gram.append((*line).at(wordPosition));
 		break;
 	case 2:
-		gram.append(line.at(wordPosition - 1)).append(" ");
-		gram.append(line.at(wordPosition));
+		gram.append((*line).at(wordPosition - 1)).append(" ");
+		gram.append((*line).at(wordPosition));
 		break;
 	case 3:
-		gram.append(line.at(wordPosition - 2)).append(" ");
-		gram.append(line.at(wordPosition - 1)).append(" ");
-		gram.append(line.at(wordPosition));
+		gram.append((*line).at(wordPosition - 2)).append(" ");
+		gram.append((*line).at(wordPosition - 1)).append(" ");
+		gram.append((*line).at(wordPosition));
 		break;
 	}
 	return gram;
