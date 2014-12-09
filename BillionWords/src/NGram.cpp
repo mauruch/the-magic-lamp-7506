@@ -32,7 +32,8 @@ return;
 }*/
 
 NGram::NGram(){
-	this->probabilityUtils = new ProbabilityUtils(this);
+	StringUtils *stringUtils = new StringUtils();
+	this->probabilityUtils = new ProbabilityUtils(this, stringUtils);
 }
 
 unsigned int NGram::whereIsMissingTheWord(vector<string> vectorOfTheLine){

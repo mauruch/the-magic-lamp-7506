@@ -1,15 +1,12 @@
 #include "../headers/ProbabilityUtils.h"
 
-string getFirstUnigram(ifstream& ngram_file, string& lineOfText);
-
-vector<string> getFirstBigram(ifstream& ngram_file, string& lineOfText);
-
-ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
+ProbabilityUtils::ProbabilityUtils(NGram *nGram, StringUtils *stringUtils) {
 	this->nGram = nGram;
+	this->stringUtils = stringUtils;
 
 	cout << "Masticando el conocimiento..." << endl;
 
-	ifstream ngram_file("ngrams_cleaned_up5");
+	ifstream ngram_file("ngrams_cleaned_up6");
 
 	if (ngram_file.is_open()) {
 		string lineOfText;
@@ -23,11 +20,11 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
 		vector<string> aux_bigram = getFirstBigram(ngram_file, lineOfText);
 
 		while (getline(ngram_file, lineOfText)) {
-			StringUtils::replace(lineOfText, "\t", " ");
-			vector<string> vector = StringUtils::split(lineOfText, ' ');
+			stringUtils->replace(lineOfText, "\t", " ");
+			vector<string> vector = stringUtils->split(lineOfText, ' ');
 			string unigram = vector.at(0);
 			if (unigram != aux_uni) {
-				totalWeightGivenUni[StringUtils::hashCode(aux_uni)] =
+				totalWeightGivenUni[stringUtils->hashCode(aux_uni)] =
 						sumWeightGivenUni;
 				aux_uni = unigram;
 				sumWeightGivenUni = 0;
@@ -38,13 +35,13 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
 				//the cat 99
 			} else if (vector.size() == 3) {
 
-				long unigram_hashed = StringUtils::hashCode(unigram);
+				long unigram_hashed = stringUtils->hashCode(unigram);
 
 				if (vector.at(1) != aux_bigram[1]) {
-					long previous_unigram_hashed = StringUtils::hashCode(
+					long previous_unigram_hashed = stringUtils->hashCode(
 							aux_bigram[0]);
-					totalWeightGivenBigram[StringUtils::hashCode(
-							StringUtils::ltos(previous_unigram_hashed)
+					totalWeightGivenBigram[stringUtils->hashCode(
+							stringUtils->ltos(previous_unigram_hashed)
 									+ aux_bigram[1])] = sumWeightGivenBigram;
 					aux_bigram = vector;
 					sumWeightGivenBigram = 0;
@@ -54,9 +51,9 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
 				sumWeightGivenUni += atol(vector.at(2).c_str());
 				//the cat is 99
 			} else {
-				long unigram_hashed = StringUtils::hashCode(unigram);
-				string numberAsString = StringUtils::ltos(unigram_hashed);
-				long bigram_hashed = StringUtils::hashCode(
+				long unigram_hashed = stringUtils->hashCode(unigram);
+				string numberAsString = stringUtils->ltos(unigram_hashed);
+				long bigram_hashed = stringUtils->hashCode(
 						numberAsString + vector.at(1));
 				trigrams[bigram_hashed][vector.at(2)] = vector.at(3);
 				sumWeightGivenBigram += atol(vector.at(3).c_str());
@@ -68,28 +65,28 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram) {
 	else {
 		cout << "Problemas al abrir los archivos" << endl;
 	}
-
+	ngram_file.close();
 	cout << "Conocimiento incorporado!!!" << endl;
 
 }
 
-string getFirstUnigram(ifstream& ngram_file, string& lineOfText) {
+string ProbabilityUtils::getFirstUnigram(ifstream& ngram_file, string& lineOfText) {
 	streampos firstPos = ngram_file.tellg();
 	getline(ngram_file, lineOfText);
-	StringUtils::replace(lineOfText, "\t", " ");
-	string aux_uni = StringUtils::split(lineOfText, ' ').at(0);
+	this->stringUtils->replace(lineOfText, "\t", " ");
 	ngram_file.seekg(firstPos);
-	return aux_uni;
+	return this->stringUtils->split(lineOfText, ' ').at(0);
 }
 
-vector<string> getFirstBigram(ifstream& ngram_file, string& lineOfText) {
+vector<string> ProbabilityUtils::getFirstBigram(ifstream& ngram_file, string& lineOfText) {
 	streampos firstPos = ngram_file.tellg();
 	vector<string> aux_bigram;
 	bool read = true;
 	while (read && getline(ngram_file, lineOfText)) {
-		StringUtils::replace(lineOfText, "\t", " ");
-		vector<string> vector = StringUtils::split(lineOfText, ' ');
+		this->stringUtils->replace(lineOfText, "\t", " ");
+		vector<string> vector = this->stringUtils->split(lineOfText, ' ');
 		if (vector.size() == 3) {
+			aux_bigram.clear();
 			aux_bigram = vector;
 			read = false;
 		}
@@ -102,13 +99,12 @@ double ProbabilityUtils::getUnigramProbability(string unigram) {
 	string weightAsString = this->unigrams[unigram];
 	int weight = atoi(weightAsString.c_str());
 
-	float sumOfAllUnigrams = UNIGRAMTOTALWEIGHT;
-	return (weight / sumOfAllUnigrams); //Probabilidad del 1gram
+	return (weight / UNIGRAMTOTALWEIGHT); //Probabilidad del 1gram
 
 }
 
-double ProbabilityUtils::getBigramProbability(vector<string> vectorBigram,
-		int gramLevel) {
+double ProbabilityUtils::getBigramProbability(vector<string> vectorBigram, int gramLevel) {
+
 	int bigramPos1 = 0;
 	int bigramPos2 = 1;
 	if (gramLevel > 2) {
@@ -116,51 +112,36 @@ double ProbabilityUtils::getBigramProbability(vector<string> vectorBigram,
 		bigramPos2 = 2;
 	}
 
-	long uni_hashed = StringUtils::hashCode(vectorBigram[bigramPos1]);
+	long uni_hashed = this->stringUtils->hashCode(vectorBigram[bigramPos1]);
 
 	float sumOfAllBigrams = this->totalWeightGivenUni[uni_hashed];
-
 	string bigram = vectorBigram[bigramPos2];
-
 	float weightBigram = atoi(this->bigrams[uni_hashed][bigram].c_str());
 
-	return (weightBigram / sumOfAllBigrams);
-
+	return ( weightBigram / sumOfAllBigrams );
 }
 
 double ProbabilityUtils::getTrigramProbability(vector<string> trigram) {
-
-	long uni_hashed = StringUtils::hashCode(trigram[0]);
-	long bi_hashed = StringUtils::hashCode(
-			StringUtils::ltos(uni_hashed) + trigram[1]);
-
+	long uni_hashed = this->stringUtils->hashCode(trigram[0]);
+	long bi_hashed = this->stringUtils->hashCode(
+			this->stringUtils->ltos(uni_hashed) + trigram[1]);
 	float sumOfAllTrigrams = this->totalWeightGivenBigram[bi_hashed];
-
 	float weightTrigram = atoi(this->trigrams[bi_hashed][trigram[2]].c_str());
-
 	return (weightTrigram / sumOfAllTrigrams);
-
 }
 
-double interpolate(double unigramProbability, double bigramProbability,
-		double trigramProbability) {
-	double unigramWeigth = 0.33;
-	double bigramWeigth = 0.33;
-	double trigramWeigth = 0.33;
-
-	return unigramWeigth * unigramProbability + bigramWeigth * bigramProbability
-			+ trigramWeigth * unigramProbability;
+double interpolate(double unigramProbability, double bigramProbability, double trigramProbability) {
+	return (UNIGRAM_WEIGHT * unigramProbability + BIGRAM_WEIGHT * bigramProbability + TRIGRAM_WEIGHT * unigramProbability);
 }
 
-double ProbabilityUtils::getWordProbability(vector<string> line,
-		int wordPosition) {
+double ProbabilityUtils::getWordProbability(vector<string> line, int wordPosition) {
 
 	double trigramProbability = (double) 0;
 	double bigramProbability = (double) 0;
 	double unigramProbability = (double) 0;
 	int gramLevel = BIGRAM_EXPRESSION;
 
-	string ngramExpression;
+	string ngramExpression = "";
 
 	if (wordPosition > 1) {
 		ngramExpression = this->nGram->getNgramExp(line, wordPosition,
@@ -171,118 +152,121 @@ double ProbabilityUtils::getWordProbability(vector<string> line,
 		BIGRAM_EXPRESSION);
 	}
 
-	vector<string> ngram_splitted = StringUtils::split(ngramExpression, ' ');
+	vector<string> ngram_splitted = this->stringUtils->split(ngramExpression, ' ');
 
 	if (wordPosition > 1)
 		trigramProbability = getTrigramProbability(ngram_splitted);
 
-	unigramProbability = getUnigramProbability(
-			ngram_splitted[ngram_splitted.size() - 1]);
+	unigramProbability = getUnigramProbability(ngram_splitted[ngram_splitted.size() - 1]);
 
 	bigramProbability = getBigramProbability(ngram_splitted, gramLevel);
 
-	return interpolate(unigramProbability, bigramProbability,
-			trigramProbability);
+	ngram_splitted.clear();
+
+	return interpolate(unigramProbability, bigramProbability,trigramProbability);
 }
 
 double ProbabilityUtils::getWordProbability(string ngramExpression,
 		int gramLevel) {
 
-	double trigramProbability = (double) 0;
-	double bigramProbability = (double) 0;
-	double unigramProbability = (double) 0;
+    double trigramProbability = (double) 0;
+    double bigramProbability = (double) 0;
+    double unigramProbability = (double) 0;
 
 	//TODO vector<string> ngram_splitted = {"a", "b", "c"};
-	vector<string> ngram_splitted = StringUtils::split(ngramExpression, ' ');
+	vector<string> ngram_splitted = this->stringUtils->split(ngramExpression, ' ');
 
-	if (gramLevel == TRIGRAM_EXPRESSION)
-		trigramProbability = getTrigramProbability(ngram_splitted);
+    if (gramLevel == TRIGRAM_EXPRESSION)
+            trigramProbability = getTrigramProbability(ngram_splitted);
 
-	unigramProbability = getUnigramProbability(
-			ngram_splitted[ngram_splitted.size() - 1]);
+    unigramProbability = getUnigramProbability(
+                    ngram_splitted[ngram_splitted.size() - 1]);
 
-	bigramProbability = getBigramProbability(ngram_splitted, gramLevel);
+    bigramProbability = getBigramProbability(ngram_splitted, gramLevel);
 
-	return interpolate(unigramProbability, bigramProbability,
-			trigramProbability);
+	ngram_splitted.clear();
+    return interpolate(unigramProbability, bigramProbability,
+                    trigramProbability);
+
+
 }
 
 string ProbabilityUtils::getMostProbableWordInTheGivenContext(
-		vector<string> line, int wordPosition) {
+                vector<string> line, int wordPosition) {
 
-	long uni_hashed = 0;
-	long bi_hashed = 0;
+        long uni_hashed = 0;
+        long bi_hashed = 0;
 
-	double wordProba = (double) 0;
-	string mostProbableWord;
-	if (wordPosition >= 2) {
-		string uni = line[wordPosition - 2];
-		string bi = line[wordPosition - 1];
-		uni_hashed = StringUtils::hashCode(uni);
-		bi_hashed = StringUtils::hashCode(StringUtils::ltos(uni_hashed) + bi);
+        double wordProba = (double) 0;
+        string mostProbableWord;
+        if (wordPosition >= 2) {
+                string uni = line[wordPosition - 2];
+                string bi = line[wordPosition - 1];
+                uni_hashed = this->stringUtils->hashCode(uni);
+                bi_hashed = this->stringUtils->hashCode(this->stringUtils->ltos(uni_hashed) + bi);
 
-		map<string, string> bi_map = this->trigrams[bi_hashed];
-		typedef map<string, string>::iterator it_type;
+                map<string, string> bi_map = this->trigrams[bi_hashed];
+                typedef map<string, string>::iterator it_type;
 
-		for (it_type iterator = bi_map.begin(); iterator != bi_map.end();
-				iterator++) {
-			string currentWord = iterator->first;
-			string ngramExpression = "";
-			ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(bi).append(WHITE_SPACE_STRING)
-					.append(currentWord);
-			double currentProba = getWordProbability(ngramExpression,
-					TRIGRAM_EXPRESSION);
-			if (currentProba > wordProba) {
-				wordProba = currentProba;
-				mostProbableWord = currentWord;
-			}
+                for (it_type iterator = bi_map.begin(); iterator != bi_map.end();
+                                iterator++) {
+                        string currentWord = iterator->first;
+                        string ngramExpression = "";
+                        ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(bi).append(WHITE_SPACE_STRING)
+                                        .append(currentWord);
+                        double currentProba = getWordProbability(ngramExpression,
+                                        TRIGRAM_EXPRESSION);
+                        if (currentProba > wordProba) {
+                                wordProba = currentProba;
+                                mostProbableWord = currentWord;
+                        }
 
-		}
+                }
 
-		uni_hashed = StringUtils::hashCode(bi);
-		map<string, string> uni_map = this->bigrams[uni_hashed];
-		typedef map<string, string>::iterator it_type;
+                uni_hashed = this->stringUtils->hashCode(bi);
+                map<string, string> uni_map = this->bigrams[uni_hashed];
+                typedef map<string, string>::iterator it_type;
 
-		for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
-				iterator++) {
-			string currentWord = iterator->first;
-			string ngramExpression = "";
-			ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(currentWord);
-			double currentProba = getWordProbability(ngramExpression, BIGRAM_EXPRESSION);
-			if (currentProba > wordProba) {
-				wordProba = currentProba;
-				mostProbableWord = currentWord;
-			}
-		}
+                for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
+                                iterator++) {
+                        string currentWord = iterator->first;
+                        string ngramExpression = "";
+                        ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(currentWord);
+                        double currentProba = getWordProbability(ngramExpression, BIGRAM_EXPRESSION);
+                        if (currentProba > wordProba) {
+                                wordProba = currentProba;
+                                mostProbableWord = currentWord;
+                        }
+                }
 
-		cout << "mostProbable: " << mostProbableWord << " con peso: "
-				<< wordProba << endl;
+                cout << "mostProbable: " << mostProbableWord << " con peso: "
+                                << wordProba << endl;
 
 
-	} else {
+        } else {
 
-		string uni = line[wordPosition - 1];
-		uni_hashed = StringUtils::hashCode(uni);
+                string uni = line[wordPosition - 1];
+                uni_hashed = this->stringUtils->hashCode(uni);
 
-		map<string, string> uni_map = this->bigrams[uni_hashed];
-		typedef map<string, string>::iterator it_type;
+                map<string, string> uni_map = this->bigrams[uni_hashed];
+                typedef map<string, string>::iterator it_type;
 
-		for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
-				iterator++) {
-			string currentWord = iterator->first;
-			string ngramExpression = "";
-			ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(currentWord);
-			double currentProba = getWordProbability(ngramExpression,
-					BIGRAM_EXPRESSION);
-			if (currentProba > wordProba) {
-				wordProba = currentProba;
-				mostProbableWord = currentWord;
-			}
-		}
-		cout << "mostProbableString: " << mostProbableWord << " con peso: "
-				<< wordProba << endl;
+                for (it_type iterator = uni_map.begin(); iterator != uni_map.end();
+                                iterator++) {
+                        string currentWord = iterator->first;
+                        string ngramExpression = "";
+                        ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(currentWord);
+                        double currentProba = getWordProbability(ngramExpression,
+                                        BIGRAM_EXPRESSION);
+                        if (currentProba > wordProba) {
+                                wordProba = currentProba;
+                                mostProbableWord = currentWord;
+                        }
+                }
+                cout << "mostProbableString: " << mostProbableWord << " con peso: "
+                                << wordProba << endl;
 
-	}
+        }
 
-	return mostProbableWord;
+        return mostProbableWord;
 }

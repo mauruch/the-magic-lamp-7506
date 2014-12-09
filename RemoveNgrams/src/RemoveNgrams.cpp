@@ -17,6 +17,7 @@
 using namespace std;
 
 int main2(int argc, char *argv[]) {
+	StringUtils *stringUtils = new StringUtils();
 	std::ofstream outputFile;
 	outputFile.open("ngrams_cleaned_up5", std::ios_base::app);
 
@@ -27,7 +28,7 @@ int main2(int argc, char *argv[]) {
 	if (ngramas.is_open()) {
 		string lineOfText;
 		while (getline(ngramas, lineaDelNgrama)) {
-			vectorOfTheLine = StringUtils::split(lineaDelNgrama, '\t');
+			vectorOfTheLine = stringUtils->split(lineaDelNgrama, '\t');
 			string numero = vectorOfTheLine.back();
 			//aca filtro todas las que son menores o iguales a cinco
 			if (atoi(numero.c_str()) > 5) {

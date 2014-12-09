@@ -8,7 +8,7 @@
 
 using namespace std;
 class NGram;
-
+class StringUtils;
 
 class ProbabilityUtils {
 private:
@@ -18,10 +18,11 @@ private:
 	map< long, long> totalWeightGivenUni;
 	map< long, long> totalWeightGivenBigram;
 	NGram *nGram;
+	StringUtils *stringUtils;
 
 public:
 
-	ProbabilityUtils(NGram *nGram);
+	ProbabilityUtils(NGram *nGram, StringUtils *stringUtils);
 
 	double getWordProbability(vector<string> line, int wordPosition);
 
@@ -34,6 +35,9 @@ public:
 	string getMostProbableWordInTheGivenContext(vector<string> line, int wordPosition);
 
 	double getWordProbability(string ngram, int gramLevel);
+
+	string getFirstUnigram(ifstream& ngram_file, string& lineOfText);
+	vector<string> getFirstBigram(ifstream& ngram_file, string& lineOfText);
 
 };
 
