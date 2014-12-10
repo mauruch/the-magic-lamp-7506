@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 	ifstream fileTest_v2("test_v2.txt");
 
 	std::ofstream outputFile; //abro un archivo de salida
-	outputFile.open("resultadoFinal4.txt", std::ios_base::app); //le indico el nombre del archivo de salida
+	outputFile.open("resultadoFinalProbaBigChanceproba95.txt", std::ios_base::app); //le indico el nombre del archivo de salida
 
 	if (fileTest_v2.is_open()) {
 		//inicializo EVERYTHING afuera
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 			if(lineOfText == "\"")
 				lineOfText = "";
 
-			if (missingWord != "" && missingWord != "\"" && lineOfText != "") {
+			if (missingWord != "" && atoi(missingWord.c_str())<0 && lineOfText != "") {
 				if (wordMissingPos < vectorLine.size()) {
 					vectorLine.insert(vectorLine.begin() + wordMissingPos,
 							missingWord);

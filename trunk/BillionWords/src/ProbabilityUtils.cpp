@@ -226,7 +226,8 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> *li
                                         .append(currentWord);
                         currentProba = getWordProbability(ngramExpression,
                                         TRIGRAM_EXPRESSION);
-                        if (currentProba > wordProba) {
+                        if (currentProba > wordProba && (currentWord != "\"" && currentWord != "'s"&& currentWord != "." && currentWord != "," && currentWord != "!"  && currentWord != "?" && currentWord != "'m" && currentWord != "--"
+                        		&& currentWord != "'" && currentWord != ")" && currentWord != "(" && currentWord != "/" && currentWord != "$" )) {
                                 wordProba = currentProba;
                                 mostProbableWord = currentWord;
                         }
@@ -248,42 +249,43 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> *li
 //                        }
 //                }
 
-               // cout << "mostProbable: " << mostProbableWord << " con peso: " << wordProba << endl;
+//                cout << "mostProbable: " << mostProbableWord << " con peso: " << wordProba << endl;
 
 
-        } else if(true){
+        } else return "";
+//        	if(true){
+//
+//                string uni = (*line)[wordPosition - 1];
+//                uni_hashed = this->stringUtils->hashCode(uni);
+//
+//                typedef map<string, string>::iterator it_type;
+//
+//                //defino variables afuera de los ciclos
+//                string currentWord;
+//                string ngramExpression = "";
+//                double currentProba;
+//
+//                for (it_type iterator = (this->bigrams[uni_hashed]).begin(); iterator != (this->bigrams[uni_hashed]).end();
+//                                iterator++) {
+//                        currentWord = iterator->first;
+//                         ngramExpression = "";
+//                        ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(currentWord);
+//                        currentProba = getWordProbability(ngramExpression,BIGRAM_EXPRESSION);
+//
+//
+//                        if (currentProba > wordProba) {
+//                                wordProba = currentProba;
+//                                mostProbableWord = currentWord;
+//                        }
+//                        //destruyo al terminar
+//                        ngramExpression.clear();
+//                        currentWord.clear();
+//                }
+//                cout << "mostProbableString: " << mostProbableWord << " con peso: " << wordProba << endl;
+//
+//        }else return "";
 
-                string uni = (*line)[wordPosition - 1];
-                uni_hashed = this->stringUtils->hashCode(uni);
-
-                typedef map<string, string>::iterator it_type;
-
-                //defino variables afuera de los ciclos
-                string currentWord;
-                string ngramExpression = "";
-                double currentProba;
-
-                for (it_type iterator = (this->bigrams[uni_hashed]).begin(); iterator != (this->bigrams[uni_hashed]).end();
-                                iterator++) {
-                        currentWord = iterator->first;
-                         ngramExpression = "";
-                        ngramExpression.append(uni).append(WHITE_SPACE_STRING).append(currentWord);
-                        currentProba = getWordProbability(ngramExpression,BIGRAM_EXPRESSION);
-
-
-                        if (currentProba > wordProba) {
-                                wordProba = currentProba;
-                                mostProbableWord = currentWord;
-                        }
-                        //destruyo al terminar
-                        ngramExpression.clear();
-                        currentWord.clear();
-                }
-               // cout << "mostProbableString: " << mostProbableWord << " con peso: " << wordProba << endl;
-
-        }else return "";
-
-        if (wordProba>0.33){
+        if (wordProba>0.77){
         return mostProbableWord;
         }else return "";
 }
