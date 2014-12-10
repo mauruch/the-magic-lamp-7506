@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 	ifstream fileTest_v2("test_v2.txt");
 
 	std::ofstream outputFile; //abro un archivo de salida
-	outputFile.open("resultadoFinal.txt", std::ios_base::app); //le indico el nombre del archivo de salida
+	outputFile.open("resultadoFinal4.txt", std::ios_base::app); //le indico el nombre del archivo de salida
 
 	if (fileTest_v2.is_open()) {
 		//inicializo EVERYTHING afuera
@@ -55,15 +55,20 @@ int main(int argc, char *argv[]) {
 			} catch (...) {
 				cout << "error con la oracion: " << lineOfText << endl;
 			}
-			vectorLine = stringUtils->split(lineOfText, ' ');
-			wordMissingPos = nGram->whereIsMissingTheWord(&vectorLine);
-			cout << wordMissingPos << endl;
-			missingWord = nGram->findMissingWord(&vectorLine, wordMissingPos);
+
+				vectorLine = stringUtils->split(lineOfText, ' ');
+				wordMissingPos = nGram->whereIsMissingTheWord(&vectorLine);
+	//			cout << wordMissingPos << endl;
+				missingWord = nGram->findMissingWord(&vectorLine, wordMissingPos);
+
 
 			//le agrego la primer comilla al output
 			outputFile << "\"";
 
-			if (missingWord != "" && missingWord != "\"") {
+			if(lineOfText == "\"")
+				lineOfText = "";
+
+			if (missingWord != "" && missingWord != "\"" && lineOfText != "") {
 				if (wordMissingPos < vectorLine.size()) {
 					vectorLine.insert(vectorLine.begin() + wordMissingPos,
 							missingWord);
