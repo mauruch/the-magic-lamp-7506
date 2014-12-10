@@ -6,7 +6,7 @@ ProbabilityUtils::ProbabilityUtils(NGram *nGram, StringUtils *stringUtils) {
 
 	cout << "Masticando el conocimiento..." << endl;
 
-	ifstream ngram_file("ngrams_cleaned_up65");
+	ifstream ngram_file("ngrams_cleaned_up5");
 
 	if (ngram_file.is_open()) {
 		string lineOfText;
@@ -248,11 +248,10 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> *li
 //                        }
 //                }
 
-                cout << "mostProbable: " << mostProbableWord << " con peso: "
-                                << wordProba << endl;
+               // cout << "mostProbable: " << mostProbableWord << " con peso: " << wordProba << endl;
 
 
-        } else {
+        } else if(true){
 
                 string uni = (*line)[wordPosition - 1];
                 uni_hashed = this->stringUtils->hashCode(uni);
@@ -280,10 +279,11 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> *li
                         ngramExpression.clear();
                         currentWord.clear();
                 }
-                cout << "mostProbableString: " << mostProbableWord << " con peso: "
-                                << wordProba << endl;
+               // cout << "mostProbableString: " << mostProbableWord << " con peso: " << wordProba << endl;
 
-        }
+        }else return "";
 
+        if (wordProba>0.33){
         return mostProbableWord;
+        }else return "";
 }

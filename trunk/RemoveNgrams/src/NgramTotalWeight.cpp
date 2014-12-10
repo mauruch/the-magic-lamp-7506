@@ -10,8 +10,8 @@ using namespace std;
 
 
 
-int main1(int argc, char *argv[]) {
-	ifstream ngramas("ngrams_cleaned_up5");
+int main00(int argc, char *argv[]) {
+	ifstream ngramas("ngrams_cleaned_up6");
 	string lineaDelNgrama = "";
 	vector<string> vectorOfTheLine;
 	StringUtils *stringUtils = new StringUtils();
