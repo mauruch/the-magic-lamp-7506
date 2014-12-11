@@ -58,7 +58,7 @@ unsigned int NGram::whereIsMissingTheWord(vector<string> *vectorOfTheLine){
 		}
 	}
 	if(minorProbability!=0){
-			if(secondLowestProbability/minorProbability < 2){
+			if(secondLowestProbability/minorProbability < 1.5){
 					whereToAdd = OUT_OF_LINE;
 			}
 	}else{
