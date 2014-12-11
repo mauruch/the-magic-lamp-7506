@@ -40,6 +40,7 @@ unsigned int NGram::whereIsMissingTheWord(vector<string> *vectorOfTheLine){
 
 	unsigned int whereToAdd = 1;
 	double minorProbability = ((double)1);
+	double secondLowestProbability = ((double)1);
 	int numberOfWords = (*vectorOfTheLine).size();
 	double wordProbability;
 
@@ -49,8 +50,21 @@ unsigned int NGram::whereIsMissingTheWord(vector<string> *vectorOfTheLine){
 		if (wordProbability < minorProbability) {
 			minorProbability = wordProbability;
 			whereToAdd = counter;
+		}else{
+			if(wordProbability < secondLowestProbability){
+				secondLowestProbability = wordProbability;
+			}
 		}
 	}
+	if(minorProbability!=0){
+			if(secondLowestProbability/minorProbability < 2){
+					whereToAdd = 999;
+			}
+	}else{
+
+				whereToAdd = 999;
+	}
+
 	return whereToAdd;
 }
 
