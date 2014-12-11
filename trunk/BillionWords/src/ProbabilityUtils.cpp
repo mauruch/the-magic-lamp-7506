@@ -110,12 +110,12 @@ vector<string> ProbabilityUtils::getFirstBigram(ifstream& ngram_file,
 
 double ProbabilityUtils::getUnigramProbability(string unigram) {
 	string weightAsString = this->unigrams[unigram];
-	if (weightAsString == ""){
+	if (weightAsString == "") {
 		return 0;
 	}
 	int weight = atoi(weightAsString.c_str());
 
-	return (log (weight) / log (UNIGRAMTOTALWEIGHT)); //Probabilidad del 1gram
+	return (log(weight) / log(UNIGRAMTOTALWEIGHT)); //Probabilidad del 1gram
 
 }
 
@@ -133,12 +133,12 @@ double ProbabilityUtils::getBigramProbability(vector<string> *vectorBigram,
 
 	float sumOfAllBigrams = this->totalWeightGivenUni[uni_hashed];
 	string bigram = (*vectorBigram)[bigramPos2];
-	float weightBigram = atoi(this->bigrams[uni_hashed][bigram].c_str());
-	if (weightBigram == ""){
+	string weightBigramAsString = this->bigrams[uni_hashed][bigram];
+	if (weightBigramAsString == "") {
 		return 0;
 	}
-
-	return (log (weightBigram) / log (sumOfAllBigrams));
+	float weightBigram = atoi(weightBigramAsString.c_str());
+	return (log(weightBigram) / log(sumOfAllBigrams));
 }
 
 double ProbabilityUtils::getTrigramProbability(vector<string> *trigram) {
@@ -146,13 +146,13 @@ double ProbabilityUtils::getTrigramProbability(vector<string> *trigram) {
 	long bi_hashed = this->stringUtils->hashCode(
 			this->stringUtils->ltos(uni_hashed) + (*trigram)[1]);
 	float sumOfAllTrigrams = this->totalWeightGivenBigram[bi_hashed];
-	float weightTrigram = atoi(
-			this->trigrams[bi_hashed][(*trigram)[2]].c_str());
-	if (weightTrigram == ""){
+	string weightTrigramAsString = this->trigrams[bi_hashed][(*trigram)[2]];
+	if (weightTrigramAsString == "") {
 		return 0;
 	}
+	float weightTrigram = atoi(weightTrigramAsString.c_str());
 
-	return (log (weightTrigram) / log (sumOfAllTrigrams));
+	return (log(weightTrigram) / log(sumOfAllTrigrams));
 }
 
 double interpolate(double unigramProbability, double bigramProbability,
@@ -181,7 +181,8 @@ double ProbabilityUtils::getWordProbability(vector<string> *line,
 		BIGRAM_EXPRESSION);
 	}
 
-	vector<string> ngram_splitted = this->stringUtils->split(ngramExpression,' ');
+	vector<string> ngram_splitted = this->stringUtils->split(ngramExpression,
+			' ');
 
 	if (wordPosition > 1)
 		trigramProbability = getTrigramProbability(&ngram_splitted);
@@ -303,5 +304,5 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 //		cout << "MMMMMMMM: " << mostProbableWord << endl;
 //		return mostProbableWord;
 //	} else
-		return "";
+	return "";
 }
