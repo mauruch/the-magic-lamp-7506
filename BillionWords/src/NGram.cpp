@@ -40,32 +40,17 @@ unsigned int NGram::whereIsMissingTheWord(vector<string> *vectorOfTheLine){
 
 	unsigned int whereToAdd = 1;
 	double minorProbability = ((double)1);
-	double secondLowestProbability = ((double)1);
 	int numberOfWords = (*vectorOfTheLine).size();
 	double wordProbability;
 
-	for (unsigned int counter = 1; counter < (numberOfWords); counter++) {
+	for (int counter = 1; counter < (numberOfWords); counter++) {
 		wordProbability = this->probabilityUtils->getWordProbability(vectorOfTheLine, counter);
 		//obtengo el peso
 		if (wordProbability < minorProbability) {
-			secondLowestProbability = minorProbability;
 			minorProbability = wordProbability;
 			whereToAdd = counter;
-		}else{
-			if(wordProbability < secondLowestProbability){
-				secondLowestProbability = wordProbability;
-			}
 		}
 	}
-	if(minorProbability!=0){
-			if(secondLowestProbability/minorProbability < 1.5){
-					whereToAdd = OUT_OF_LINE;
-			}
-	}else{
-
-				whereToAdd = OUT_OF_LINE;
-	}
-
 	return whereToAdd;
 }
 
