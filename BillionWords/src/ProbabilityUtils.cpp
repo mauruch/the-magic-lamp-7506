@@ -251,13 +251,13 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 			WHITE_SPACE_STRING).append(currentWord);
 			currentProba = getWordProbability(ngramExpression,
 			TRIGRAM_EXPRESSION);
-			if (currentProba > wordProba && (mostProbableWord != "\"" && mostProbableWord != "'s"
-					&& mostProbableWord != "." && mostProbableWord != ","
-					&& mostProbableWord != "!" && mostProbableWord != "?"
-					&& mostProbableWord != "'m" && mostProbableWord != "--"
-					&& mostProbableWord != "'" && mostProbableWord != ")"
-					&& mostProbableWord != "(" && mostProbableWord != "/"
-					&& mostProbableWord != "$")) {
+			if (currentProba > wordProba && (currentWord != "\"" && currentWord != "'s"
+					&& currentWord != "." && currentWord != ","
+					&& currentWord != "!" && currentWord != "?"
+					&& currentWord != "'m" && currentWord != "--"
+					&& currentWord != "'" && currentWord != ")"
+					&& currentWord != "(" && currentWord != "/"
+					&& currentWord != "$")) {
 				wordProba = currentProba;
 				mostProbableWord = currentWord;
 			}
@@ -287,13 +287,13 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 			currentProba = getWordProbability(ngramExpression,
 			BIGRAM_EXPRESSION);
 
-			if (currentProba > wordProba && (mostProbableWord != "\"" && mostProbableWord != "'s"
-										&& mostProbableWord != "." && mostProbableWord != ","
-									&& mostProbableWord != "!" && mostProbableWord != "?"
-										&& mostProbableWord != "'m" && mostProbableWord != "--"
-										&& mostProbableWord != "'" && mostProbableWord != ")"
-									&& mostProbableWord != "(" && mostProbableWord != "/"
-										&& mostProbableWord != "$")) {
+			if (currentProba > wordProba && (currentWord != "\"" && currentWord != "'s"
+										&& currentWord != "." && currentWord != ","
+									&& currentWord != "!" && currentWord != "?"
+										&& currentWord != "'m" && currentWord != "--"
+										&& currentWord != "'" && currentWord != ")"
+									&& currentWord != "(" && currentWord != "/"
+										&& currentWord != "$")) {
 				wordProba = currentProba;
 				mostProbableWord = currentWord;
 			}
