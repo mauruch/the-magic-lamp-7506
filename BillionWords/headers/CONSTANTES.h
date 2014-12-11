@@ -12,8 +12,8 @@
 #define WHITE_SPACE ' '
 #define WHITE_SPACE_STRING " "
 #define NGRAMS_CLEANED "ngrams_cleaned_up6"
-#define UNIGRAM_WEIGHT 0.001
-#define BIGRAM_WEIGHT 0.42
+#define UNIGRAM_WEIGHT 0.002
+#define BIGRAM_WEIGHT 0.41
 #define TRIGRAM_WEIGHT 1.25
 
 
