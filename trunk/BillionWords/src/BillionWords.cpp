@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <locale>
 #include <sstream>
 
 using namespace std;
@@ -20,13 +21,13 @@ int main(int argc, char *argv[]) {
 	ifstream fileTest_v2("test_v2.txt");
 
 	std::ofstream outputFile; //abro un archivo de salida
-	outputFile.open("resultadoFinalProbaBigChanceproba95.txt", std::ios_base::app); //le indico el nombre del archivo de salida
+	outputFile.open("LuisTeAmo.txt", std::ios_base::app); //le indico el nombre del archivo de salida
 
 	if (fileTest_v2.is_open()) {
 		//inicializo EVERYTHING afuera
 		string lineOfText;
 		vector<string> vectorLine;
-		string missingWord;
+		string missingWord = "";
 		int startOfSentence;
 		int longOfSentence;
 		int counter;
@@ -57,11 +58,20 @@ int main(int argc, char *argv[]) {
 			}
 
 				vectorLine = stringUtils->split(lineOfText, ' ');
-				wordMissingPos = nGram->whereIsMissingTheWord(&vectorLine);
-	//			cout << wordMissingPos << endl;
-				if(wordMissingPos !=OUT_OF_LINE){
-				missingWord = nGram->findMissingWord(&vectorLine, wordMissingPos);
+				if (vectorLine.size()< 6){
+					std::locale loc;
+					wordMissingPos = nGram->whereIsMissingTheWord(&vectorLine);
+		//			cout << wordMissingPos << endl;
+					missingWord = nGram->findMissingWord(&vectorLine, wordMissingPos);
+//					cout << missingWord << endl;
+					  for (std::string::size_type i=0; i<missingWord.length(); ++i){
+					    missingWord[i] = tolower(missingWord[i],loc);
+					  }
+					  if(missingWord != "")
+						cout << endl << "la palabra que pongo es " << missingWord << endl;
+
 				}
+				else missingWord="";
 
 
 			//le agrego la primer comilla al output
@@ -70,7 +80,7 @@ int main(int argc, char *argv[]) {
 			if(lineOfText == "\"")
 				lineOfText = "";
 
-			if (missingWord != "" && lineOfText != "" && wordMissingPos != OUT_OF_LINE) {
+			if (missingWord != "" && lineOfText != "") {
 				if (wordMissingPos < vectorLine.size()) {
 					vectorLine.insert(vectorLine.begin() + wordMissingPos,
 							missingWord);
