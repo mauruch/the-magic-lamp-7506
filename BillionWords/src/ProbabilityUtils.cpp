@@ -251,7 +251,13 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 			WHITE_SPACE_STRING).append(currentWord);
 			currentProba = getWordProbability(ngramExpression,
 			TRIGRAM_EXPRESSION);
-			if (currentProba > wordProba) {
+			if (currentProba > wordProba && (mostProbableWord != "\"" && mostProbableWord != "'s"
+					&& mostProbableWord != "." && mostProbableWord != ","
+					&& mostProbableWord != "!" && mostProbableWord != "?"
+					&& mostProbableWord != "'m" && mostProbableWord != "--"
+					&& mostProbableWord != "'" && mostProbableWord != ")"
+					&& mostProbableWord != "(" && mostProbableWord != "/"
+					&& mostProbableWord != "$")) {
 				wordProba = currentProba;
 				mostProbableWord = currentWord;
 			}
@@ -281,7 +287,13 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 			currentProba = getWordProbability(ngramExpression,
 			BIGRAM_EXPRESSION);
 
-			if (currentProba > wordProba) {
+			if (currentProba > wordProba && (mostProbableWord != "\"" && mostProbableWord != "'s"
+										&& mostProbableWord != "." && mostProbableWord != ","
+									&& mostProbableWord != "!" && mostProbableWord != "?"
+										&& mostProbableWord != "'m" && mostProbableWord != "--"
+										&& mostProbableWord != "'" && mostProbableWord != ")"
+									&& mostProbableWord != "(" && mostProbableWord != "/"
+										&& mostProbableWord != "$")) {
 				wordProba = currentProba;
 				mostProbableWord = currentWord;
 			}
@@ -293,16 +305,9 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(
 
 	}
 
-//	if (wordProba > 1000
-//			&& (mostProbableWord != "\"" && mostProbableWord != "'s"
-//					&& mostProbableWord != "." && mostProbableWord != ","
-//					&& mostProbableWord != "!" && mostProbableWord != "?"
-//					&& mostProbableWord != "'m" && mostProbableWord != "--"
-//					&& mostProbableWord != "'" && mostProbableWord != ")"
-//					&& mostProbableWord != "(" && mostProbableWord != "/"
-//					&& mostProbableWord != "$")) {
-//		cout << "MMMMMMMM: " << mostProbableWord << endl;
-//		return mostProbableWord;
-//	} else
+	if (wordProba > 0.6) {
+		cout << "MMMMMMMM: " << mostProbableWord << endl;
+		return mostProbableWord;
+	} else
 	return "";
 }
