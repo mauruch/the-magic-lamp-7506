@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 				vectorLine = stringUtils->split(lineOfText, ' ');
 				wordMissingPos = nGram->whereIsMissingTheWord(&vectorLine);
 	//			cout << wordMissingPos << endl;
-				if(wordMissingPos !=999){
+				if(wordMissingPos !=OUT_OF_LINE){
 				missingWord = nGram->findMissingWord(&vectorLine, wordMissingPos);
 				}
 
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 			if(lineOfText == "\"")
 				lineOfText = "";
 
-			if (missingWord != "" && lineOfText != "" && wordMissingPos != 999) {
+			if (missingWord != "" && lineOfText != "" && wordMissingPos != OUT_OF_LINE) {
 				if (wordMissingPos < vectorLine.size()) {
 					vectorLine.insert(vectorLine.begin() + wordMissingPos,
 							missingWord);
