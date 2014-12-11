@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 	ifstream fileTest_v2("test_v2.txt");
 
 	std::ofstream outputFile; //abro un archivo de salida
-	outputFile.open("LuisTeAmo.txt", std::ios_base::app); //le indico el nombre del archivo de salida
+	outputFile.open("MejorandoVer.txt", std::ios_base::app); //le indico el nombre del archivo de salida
 
 	if (fileTest_v2.is_open()) {
 		//inicializo EVERYTHING afuera
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 			}
 
 				vectorLine = stringUtils->split(lineOfText, ' ');
-				if (vectorLine.size()< 6){
+				if (vectorLine.size() <= 6){
 					std::locale loc;
 					wordMissingPos = nGram->whereIsMissingTheWord(&vectorLine);
 		//			cout << wordMissingPos << endl;

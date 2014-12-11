@@ -251,7 +251,7 @@ string ProbabilityUtils::getMostProbableWordInTheGivenContext(vector<string> *li
 
 //                cout << "mostProbable: " << mostProbableWord << " con peso: " << wordProba << endl;
 
-		if (wordProba<0.3){
+		if (wordProba<0.17){
 			return "";
 		}
         } else { return "";
